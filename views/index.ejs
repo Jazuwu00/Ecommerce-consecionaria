@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>eCommerce</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/about">Acerca de</a></li>
+      <li><a href="/contact">Contacto</a></li>
+    </ul>
+  </nav>
+
+   <!-- Contenido principal -->
+   <div class="main-content">
+    <h1>Categorías de productos</h1>
+    <div class="categories">
+      <% categories.forEach(category => { %>
+        <a href="/products/<%= category %>">
+          <div class="category-thumbnail">
+            <img src="/images/<%= category.toLowerCase() %>.jpg" alt="<%= category %>" height="100px">
+            <h3><%= category %></h3>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Todos los derechos reservados &copy; 2023</p>
+  </footer>
+</body>
+</html>
