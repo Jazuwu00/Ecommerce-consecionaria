@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>eCommerce - Productos de <%= category %></title>
+  <title>eCommerce</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -16,17 +16,22 @@
 
   <!-- Contenido principal -->
   <div class="main-content">
-    <h1>Productos en la categoría <%= category %></h1>
+    <h1>producto</h1>
     <ul>
       <% products.forEach(product => { %>
         <li>
-          <a href="/product/<%= product.id %>">
+          <a href="">
             <%= product.name %> - <%= product.price %> USD
           </a>
+          <form action="/addToCart" method="POST">
+            <input type="hidden" name="productId" value="<%= product.id %>">
+            <button type="submit">Comprar</button>
+          </form>
         </li>
       <% }); %>
     </ul>
   </div>
+
   <!-- Footer -->
   <footer>
     <p>Todos los derechos reservados &copy; 2023</p>

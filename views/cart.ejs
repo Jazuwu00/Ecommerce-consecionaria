@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrito de compras</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/cart">Carrito</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <h1>Carrito de compras</h1>
+    <ul>
+      <% cart.forEach(item => { %>
+        <li>
+          <%= item.name %> - Cantidad: <%= item.quantity %> - Precio: <%= item.price * item.quantity %> USD
+        </li>
+      <% }); %>
+    </ul>
+    <form action="/checkout" method="POST">
+      <button type="submit">Comprar</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Todos los derechos reservados &copy; 2023</p>
+  </footer>
+</body>
+</html>
