@@ -7,6 +7,8 @@ const path = require('path'); // Importa el módulo 'path'
 
 // Configurar el motor de plantillas EJS
 app.set('view engine', 'ejs');
+
+
 app.set('views', path.join(__dirname, 'views'));
 
 // Middleware
