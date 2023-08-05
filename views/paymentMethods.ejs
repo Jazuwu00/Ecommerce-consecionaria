@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Métodos de Pago</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-UGjQ8auVK5cC+BXyfnuX9aDfG7E5BVBQHs3zvqdb1VxXc29yfBCZ3QygyL8zWOrC3CkzR/PT8rSxumzakJT1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   </head>
@@ -12,10 +13,11 @@
     <%- include('navbar') %>
 
     <div class="main-content text-light  ">
+      <h1 class="text-center">Selecciona un método de pago:</h1>
       <div class="row py-5">
-        <h1 class="text-center">Selecciona un método de pago:</h1>
-       <div class="col-xl-9 col-12 text-center">
         
+       <div class="col-xl-12 col-12 text-center">
+       
         <form action="/checkout"  method="post">
             <% for (let i = 0; i < paymentMethods.length; i++) { %>
                 <div>

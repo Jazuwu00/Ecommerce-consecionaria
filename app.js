@@ -23,9 +23,9 @@ const products = [
     { id: 2, name: 'Llantas', price: 150, category: 'Autos' },
     { id: 3, name: 'Limpiador de interior', price: 20, category: 'Autos' },
     { id: 4, name: 'Cera para autos', price: 25, category: 'Autos' },
-    { id: 5, name: 'Teléfono inteligente', price: 500, category: 'Electronicos' },
+    { id: 5, name: 'Teléfono', price: 500, category: 'Electronicos' },
     { id: 6, name: 'Tablet', price: 300, category: 'Electronicos' },
-    { id: 7, name: 'Auriculares inalámbricos', price: 100, category: 'Electronicos' },
+    { id: 7, name: 'Auriculares ', price: 100, category: 'Electronicos' },
   ];
   
   // Categorías de productos
