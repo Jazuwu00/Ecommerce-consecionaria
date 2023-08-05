@@ -3,34 +3,64 @@
 <head>
   <title>Carrito de compras</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
   <!-- Navbar -->
-  <nav>
-    <ul>
-      <li><a href="/">Inicio</a></li>
-      <li><a href="/cart">Carrito</a></li>
-    </ul>
-  </nav>
+  <%- include('navbar') %>
 
   <!-- Contenido principal -->
-  <div class="main-contentProduct">
-    <h1>Carrito de compras</h1>
-    <ul>
-      <% cart.forEach(item => { %>
-        <li>
-          <%= item.name %> - Cantidad: <%= item.quantity %> - Precio: <%= item.price * item.quantity %> USD
-        </li>
-      <% }); %>
-    </ul>
-    <form action="/checkout" method="POST">
-      <button type="submit">Comprar</button>
-    </form>
+  <div class="main-content">
+    <h1 class="text-center text-light pt-5">Carrito de compras</h1>
+    <div class="container " >
+      <div class="row py-5 d-flex justify-content-center">
+        <% cart.forEach(item => { %>
+        <div class="col-xl-9 col-12 text-center "> 
+          <div class="card d-flex flex-row mt-3"  style="background-color: rgba(8, 9, 17, 0.705);" >
+           
+
+              <div class="card-body col pt-4 text-light">
+                
+                <p> <%= item.name %> - Cantidad: <%= item.quantity %> - Precio: <%= item.price * item.quantity %> USD</p>
+                
+              </div>
+           
+              <div class="col-xl-3 col-5 col-sm-4   pt-4 d-flex   justify-content-around">
+                <form action="/removeFromCart" class="mb-3 " method="POST">
+                <input type="hidden" name="productId" value="<%= item.id %>">
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+              </form>
+              <form action="/viewProduct" class="mb-3" method="POST">
+                <input type="hidden" name="productId" value="<%= item.id %>">
+                <button type="submit" class="btn btn-success">Ver</button>
+              </form></div>
+
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      <div class="container " style="background-color: rgba(24, 24, 34, 0.836); width: 300px;">
+        <div class="row pt-2 justify-content-center">
+          <div class="col-6 text-center text-light p-2">
+            <p>Total:</p> 
+          </div>
+          <div class="col-6 text-center text-light">
+            <form action="/payment" method="POST">
+              <button type="submit" class="btn btn-success">Comprar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+       
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>Todos los derechos reservados &copy; 2023</p>
-  </footer>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Incluye el footer -->
+  <%- include('footer') %>
 </body>
 </html>

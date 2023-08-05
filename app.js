@@ -19,13 +19,13 @@ const cart = []; // Arreglo para almacenar los productos en el carrito
 
 // Datos de ejemplo (productos para autos y electrónicos)
 const products = [
-    { id: 1, name: 'Aceite de motor', price: 30, category: 'Auto' },
-    { id: 2, name: 'Llantas', price: 150, category: 'Auto' },
-    { id: 3, name: 'Limpiador de interior', price: 20, category: 'Auto' },
-    { id: 4, name: 'Cera para autos', price: 25, category: 'Auto' },
-    { id: 5, name: 'Teléfono inteligente', price: 500, category: 'Electrónicos' },
-    { id: 6, name: 'Tablet', price: 300, category: 'Electrónicos' },
-    { id: 7, name: 'Auriculares inalámbricos', price: 100, category: 'Electrónicos' },
+    { id: 1, name: 'Aceite de motor', price: 30, category: 'Autos' },
+    { id: 2, name: 'Llantas', price: 150, category: 'Autos' },
+    { id: 3, name: 'Limpiador de interior', price: 20, category: 'Autos' },
+    { id: 4, name: 'Cera para autos', price: 25, category: 'Autos' },
+    { id: 5, name: 'Teléfono inteligente', price: 500, category: 'Electronicos' },
+    { id: 6, name: 'Tablet', price: 300, category: 'Electronicos' },
+    { id: 7, name: 'Auriculares inalámbricos', price: 100, category: 'Electronicos' },
   ];
   
   // Categorías de productos
@@ -49,15 +49,41 @@ app.post('/addToCart', (req, res) => {
 
   res.redirect(`/cart`);
 })
+// Ruta para eliminar productos del carrito
+app.post('/removeFromCart', (req, res) => {
+  const productId = parseInt(req.body.productId);
 
-// Ruta para procesar la compra
+  // Buscar el producto en el carrito
+  const productIndex = cart.findIndex((item) => item.id === productId);
+
+  if (productIndex !== -1) {
+    cart.splice(productIndex, 1); // Eliminar el producto del carrito
+  }
+
+  res.redirect(`/cart`);
+});
+
+
+// Ruta para mostrar la página de métodos de pago
+app.post('/payment', (req, res) => {
+  // Supongamos que tienes una lista de métodos de pago disponibles
+  const paymentMethods = [
+    { id: 1, name: 'Tarjeta de crédito' },
+    { id: 2, name: 'PayPal' },
+    
+  ];
+
+  res.render('paymentMethods', { paymentMethods });
+});
+
+// Ruta para procesar el pago
 app.post('/checkout', (req, res) => {
-  // Procesar la compra aquí (calcular total, procesar pago, etc.)
+  const selectedPaymentMethod = req.body.paymentMethod; // Obtener el método de pago seleccionado desde el formulario
 
-  // Vaciar el carrito después de la compra
-  cart.length = 0;
+  // Aquí puedes agregar la lógica para procesar el pago con el método seleccionado
+  // Por ejemplo, realizar una transacción, guardar el pedido en la base de datos, etc.
 
-  // Redirigir a la página de agradecimiento o confirmación de compra
+  // Luego redirige a la página de confirmación o agradecimiento
   res.redirect('/thankyou');
 });
 

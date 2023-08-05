@@ -1,39 +1,17 @@
 body{
     margin: 0%;
-    background-color: rgb(182, 171, 171)!important;
+    background-image: url('../images/wallpaper.jpg'); /* Reemplaza '/ruta/de/la/imagen.jpg' con la ruta de tu imagen */
+    background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
+    background-repeat: no-repeat;
     color: aliceblue;
-    font-family: sans-serif;
+    font-family: sans-serif!important;
     list-style: none!important;
 }
-/* Estilos para el navbar */
-nav {
-    margin: 0%;
-    display: flex;
-    justify-content: center;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-  }
-  
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav li {
-    display: inline-block;
-    margin-right: 20px;
-  }
-  
-  nav a {
-    color: #fff;
-    text-decoration: none;
-  }
+
   
  /* Estilos para el contenido principal */
 .main-content {
-    min-height: calc(100vh - 70px); /* Restar la altura del navbar */
+    min-height: calc(100vh - 70px); 
     padding: 20px;
   }
   
@@ -43,17 +21,23 @@ nav {
     color: #fff;
     padding: 10px;
     text-align: center;
-    position: fixed;
+    
     bottom: 0;
     left: 0;
     width: 100%;
   }
   
 
- button{
-    background-color: brown;
-    color: #fff;
-    border: none;
-    margin: 10px;
-    padding: 5px;
+
+
+  @media only screen and (max-width: 576px) {
+  .producto .card{
+    height: 430px;
+   }
   }
+  
+  @media only screen and (min-width: 576px) {
+    .producto .card{
+      height: 330px;
+     }
+}

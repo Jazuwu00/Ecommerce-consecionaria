@@ -3,35 +3,48 @@
 <head>
   <title>eCommerce</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
   <!-- Navbar -->
-  <nav>
-    <ul>
-      <li><a href="/">Inicio</a></li>
-      <li><a href="/about">Acerca de</a></li>
-      <li><a href="/contact">Contacto</a></li>
-    </ul>
-  </nav>
+  <%- include('navbar') %>
 
    <!-- Contenido principal -->
-   <div class="main-content">
-    <h1>Categorías de productos</h1>
-    <div class="categories">
-      <% categories.forEach(category => { %>
-        <a href="/products/<%= category %>">
-          <div class="category-thumbnail">
-            <img src="/images/<%= category.toLowerCase() %>.jpg" alt="<%= category %>" height="100px">
-            <h3><%= category %></h3>
+ 
+  <div class="main-content">
+    <h1 class="text-center text-light pt-5">Que producto deseas comprar?</h1>
+    <div class="container vh-100">
+      <div class="row py-5">
+        <% categories.forEach(category => { %>
+        <div class="col-sm-6 col-md-4 col-lg-3 p-2 "> 
+          <div class="card text-center  " style="background-color: rgba(8, 9, 17, 0.705);">
+            <div >
+              <img src="/images/<%= category.toLowerCase() %>.jpg" class="card-img-top" alt="" height="100px">
+              <div class="card-body">
+                <h3 class="text-light font-weight-bold text-decoration-none"><%= category %></h3>
+              </div>
+            </div>
+           
+              <a href="/products/<%= category %>" class=" m-3 btn btn-outline-light mx-auto  text-center  text-decoration-none w-50" style="height: 40px;">
+                  <p class="">Ver mas</p>
+                </a>
+           
+
           </div>
-        </a>
-      <% }); %>
+        </div>
+        <% }); %>
+      </div>
     </div>
   </div>
+  
+ 
 
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <!-- Footer -->
-  <footer>
-    <p>Todos los derechos reservados &copy; 2023</p>
-  </footer>
+  <!-- Incluye el footer -->
+  <%- include('footer') %>
 </body>
 </html>
