@@ -16,22 +16,22 @@
   <div class="main-content">
     <h1 class="text-center text-light pt-5">Que producto deseas comprar?</h1>
     <div class="container vh-100">
-      <div class="row py-5">
+      <div class="row h-100 justify-content-center ">
         <% categories.forEach(category => { %>
-        <div class="col-sm-6 col-md-4 col-lg-3 p-2 "> 
-          <div class="card text-center  " style="background-color: rgba(8, 9, 17, 0.705);">
-            <div >
-              <img src="/images/<%= category.toLowerCase() %>.jpg" class="card-img-top" alt="" height="100px">
+        <div class="col-sm-6 col-md-4 col-lg-3 p-2 d-flex pt-5">
+          <div class="card text-center w-100" style="background-color: rgba(8, 9, 17, 0.705); height: 300px;">
+            <div>
+              <img src="/images/<%= category.toLowerCase() %>.jpg" class="card-img-top" alt="" height="150px">
               <div class="card-body">
                 <h3 class="text-light font-weight-bold text-decoration-none"><%= category %></h3>
               </div>
             </div>
            
-              <a href="/products/<%= category %>" class=" m-3 btn btn-outline-light mx-auto  text-center  text-decoration-none w-50" style="height: 40px;">
-                  <p class="">Ver mas</p>
-                </a>
-           
-
+           <div class="mx-auto ">
+            <a href="/products/<%= category %>" class="m-3 p-1 btn btn-outline-light text-center text-decoration-none w-75" style="height: 30px;">
+              <p class="small"> Ver más</p>
+            </a>
+           </div>
           </div>
         </div>
         <% }); %>

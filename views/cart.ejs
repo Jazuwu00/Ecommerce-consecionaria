@@ -18,32 +18,29 @@
     <div class="container " >
       <div class="row py-5 d-flex justify-content-center">
         <% cart.forEach(item => { %>
-        <div class="col-xl-9 col-12 text-center "> 
-          <div class="card d-flex flex-row mt-3"  style="background-color: rgba(8, 9, 17, 0.705);" >
-           
-
-              <div class="card-body col pt-4 text-light">
-                
-                <p> <%= item.name %> - Cantidad: <%= item.quantity %> - Precio: <%= item.price * item.quantity %> USD</p>
-                
+          <div class="col-xl-9 col-12 text-center mb-3">
+            <div class="card d-flex flex-sm-row flex-column mt-3" style="background-color: rgba(8, 9, 17, 0.705);">
+              <div class="card-body col d-flex  justify-content-around text-light">
+                <p><%= item.name %></p>
+                <p>Cantidad: <%= item.quantity %></p>
+                <p>Precio: <%= item.price * item.quantity %> USD</p>
               </div>
-           
-              <div class="col-xl-3 col-5 col-sm-4   pt-4 d-flex   justify-content-around">
-                <form action="/removeFromCart" class="mb-3 " method="POST">
-                <input type="hidden" name="productId" value="<%= item.id %>">
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-              </form>
-              <form action="/viewProduct" class="mb-3" method="POST">
-                <input type="hidden" name="productId" value="<%= item.id %>">
-                <button type="submit" class="btn btn-success">Ver</button>
-              </form></div>
-
+              <div class="col-xl-3 col col-sm-4 d-flex align-items-center justify-content-around">
+                <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
+                  <input type="hidden" name="productId" value="<%= item.id %>">
+                  <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+                <form action="/product/<%= item.id %>" class="mb-3" method="POST">
+                  <input type="hidden" name="productId" value="<%= item.id %>">
+                  <button type="submit" class="btn btn-success">Ver</button>
+                </form>
+              </div>
+            </div>
           </div>
-        </div>
         <% }); %>
       </div>
       <div class="container " style="background-color: rgba(255, 255, 255, 0); width: 300px;">
-        <div class="row pt-2 justify-content-center">
+        <div class="row pt-2 d-flex  justify-content-center">
           <div class="col-6 text-center text-light p-2">
             <p>Total:</p> 
           </div>

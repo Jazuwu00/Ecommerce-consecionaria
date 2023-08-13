@@ -1,8 +1,12 @@
+/*background-image: url('../images/wallpaper.jpg'); 
+background-repeat: no-repeat;
+*/
+
+
+
 body{
     margin: 0%;
-    background-image: url('../images/wallpaper.jpg'); /* Reemplaza '/ruta/de/la/imagen.jpg' con la ruta de tu imagen */
-    background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
-    background-repeat: no-repeat;
+    background-color: #313131!important;
     color: aliceblue;
     font-family: sans-serif!important;
     list-style: none!important;
