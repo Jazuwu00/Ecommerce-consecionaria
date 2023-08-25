@@ -21,18 +21,19 @@
           <div class="col-xl-9 col-12 text-center mb-3">
             <div class="card d-flex flex-sm-row flex-column mt-3" style="background-color: rgba(8, 9, 17, 0.705);">
               <div class="card-body col d-flex  justify-content-around text-light">
-                <p><%= item.name %></p>
+                <p><%= item.marca %> <%= item.modelo %></p>
                 <p>Cantidad: <%= item.quantity %></p>
-                <p>Precio: <%= item.price * item.quantity %> USD</p>
+                <p>Precio: <%= item.precio * item.quantity %> USD</p>
               </div>
               <div class="col-xl-3 col col-sm-4 d-flex align-items-center justify-content-around">
                 <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
-                  <input type="hidden" name="productId" value="<%= item.id %>">
+                
+                  <input type="hidden" name="productId" value="<%= item.codAD0KM %>">
                   <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>
-                <form action="/product/<%= item.id %>" class="mb-3" method="POST">
-                  <input type="hidden" name="productId" value="<%= item.id %>">
-                  <button type="submit" class="btn btn-success">Ver</button>
+
+                <a href="/autos/<%= item.codAD0KM %> " class="btn btn-success mb-3 mr-sm-3">Ver</a>
+              
                 </form>
               </div>
             </div>

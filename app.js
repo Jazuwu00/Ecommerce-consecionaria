@@ -2,7 +2,22 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const path = require('path'); // Importa el módulo 'path'
+const mysql = require('mysql2');
 
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '', 
+  database: 'concesionarialpp', 
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    return;
+  }
+  console.log('Connected to the database');
+});
 
 
 // Configurar el motor de plantillas EJS
@@ -18,46 +33,42 @@ app.use(express.static('public'));
 const cart = []; // Arreglo para almacenar los productos en el carrito
 
 
-const products = [
-    { id: 1, name: 'Chevrolet', price: 30, category: 'Autos',imageUrl: '/images/autos/chevrolet.jpg'},
-    { id: 2, name: 'Chevrolet Onix', price: 150, category: 'Autos' ,imageUrl: '/images/autos/chevroletonix-plus.jpg'},
-    { id: 3, name: 'Chevrolet Cruze', price: 20, category: 'Autos' ,imageUrl: '/images/autos/cruze-rs.jpg' },
-    { id: 4, name: 'Chevrolet Joy', price: 25, category: 'Autos' ,imageUrl: '/images/autos/chevrolet-joy.jpg'},
-    { id: 5, name: 'Chevrolet Joy plus', price: 500, category: 'Autos' ,imageUrl: '/images/autos/chevrolet-joy-plus.jpg' },
-    { id: 6, name: 'Cera para autos', price: 300, category: 'Articulos' ,imageUrl: '/images/productos/CeraAuto.jpg'},
-    { id: 7, name: 'NavegadorGps', price: 100, category: 'Articulos' ,imageUrl: '/images/productos/navegadorGps.jpg'},
-    { id: 8, name: 'Llantas', price: 100, category: 'Articulos' ,imageUrl: '/images/productos/llantas.jpg'},
-    { id: 9, name: 'Aceite de motor', price: 100, category: 'Articulos' ,imageUrl: '/images/productos/AceiteDeMotor.jpg'},
-  ];
-  
-  // Categorías de productos
-  const categories = [...new Set(products.map(product => product.category))];
   
   // Rutas
   
   // Ruta para agregar productos al carrito
   app.get('/addToCart/:id', (req, res) => {
-    const productId = parseInt(req.params.id);
-    const product = products.find((p) => p.id === productId);
+    const autoIdToShow = req.params.id;
   
-    if (product) {
-      const existingProduct = cart.find((item) => item.id === productId);
+    connection.query(
+      'SELECT * FROM autodisponible0km WHERE codAD0KM = ?',
+      [autoIdToShow],
+      (error, results) => {
+        if (error) {
+          res.status(500).send('Error al obtener el auto');
+        } else if (results.length > 0) {
+          const existingProduct = cart.find(item => item.id === autoIdToShow);
   
-      if (existingProduct) {
-        existingProduct.quantity += 1;
-      } else {
-        cart.push({ ...product, quantity: 1 });
+          if (existingProduct) {
+            
+            existingProduct.quantity += 1;
+          } else {
+           
+            cart.push({ id: autoIdToShow, quantity: 1, ...results[0] });
+          }
+  
+          // Redireccionar al carrito o mostrar un mensaje de éxito
+          res.redirect('/cart');
+          console.log(cart)
+        } else {
+          res.send('No se encontró el auto');
+        }
       }
-  
-      res.redirect('/cart'); // Redirige al carrito después de agregar el producto
-    } else {
-      return res.status(404).send('Producto no encontrado');
-    }
+    );
   });
- 
 // Ruta para eliminar productos del carrito
 app.post('/removeFromCart', (req, res) => {
-  const productId = parseInt(req.body.productId);
+  const productId = req.body.productId;
 
   // Buscar el producto en el carrito
   const productIndex = cart.findIndex((item) => item.id === productId);
@@ -99,35 +110,72 @@ app.get('/thankyou', (req, res) => {
 
 // ruta principal
   app.get('/', (req, res) => {
-    res.render('index', { categories });
+    res.render('index');
   });
-  
-//ruta que muestra distintos productos segun su categoria
-  app.get('/products/:category', (req, res) => {
-    const category = req.params.category;
-    const categoryProducts = products.filter(product => product.category === category);
-    res.render('products', { category, products: categoryProducts });
-  });
-  
-  
 
 
+  // Ruta para mostrar los autos desde la base de datos
+app.get('/autos', (req, res) => {
+  const query = 'SELECT * FROM autodisponible0km';
+  
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error retrieving autos:', err);
+      res.status(500).send('Error retrieving autos');
+      return;
+    }
+    
+    // Renderiza la página 'autos' con los resultados de la consulta
+    res.render('autos', { autos: results });
+  });
+});
+
+// Ruta para mostrar los productos desde la base de datos
+app.get('/productos', (req, res) => {
+  const query = 'SELECT * FROM accesorio';
+  
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error retrieving products:', err);
+      res.status(500).send('Error retrieving products');
+      return;
+    }
+    
+    // Renderiza la página 'productos' con los resultados de la consulta
+    res.render('productos', { productos: results });
+  });
+});
+  
   // Ruta para mostrar el contenido del carrito
 app.get('/cart', (req, res) => {
   res.render('cart', { cart });
 });
 
+
+
   // Ruta para visualizar un producto específico
-app.get('/product/:id', (req, res) => {
-  const productId = parseInt(req.params.id);
-  const product = products.find(prod => prod.id === productId);
 
-  if (!product) {
-    return res.status(404).send('Producto no encontrado');
-  }
 
-  res.render('product', { product });
+
+app.get('/autos/:id', (req, res) => {
+  const autoIdToShow = req.params.id;
+
+  connection.query(
+    'SELECT * FROM autodisponible0km WHERE codAD0KM = ?',
+    [autoIdToShow],
+    (error, results) => {
+      if (error) {
+        res.status(500).send('Error al obtener el auto');
+      } else if (results.length > 0) {
+        const autoToShow = results[0];
+        res.render('auto', { auto: autoToShow });
+      } else {
+        res.send('No se encontró el auto con el ID ' + autoIdToShow);
+      }
+    }
+  );
 });
+
  
 // Iniciar el servidor
 const port = 3000;

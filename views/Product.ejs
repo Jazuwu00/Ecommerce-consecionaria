@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Detalle del Producto</title>
+  <title>Detalle del autoo</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-UGjQ8auVK5cC+BXyfnuX9aDfG7E5BVBQHs3zvqdb1VxXc29yfBCZ3QygyL8zWOrC3CkzR/PT8rSxumzakJT1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -14,14 +14,14 @@
     <div class="container-fluid mt-5">
       <div class="row bg-dark  d-flex justify-content-center ">
         <div class="col-xl-4 col-sm-8  col-md-6  col-9 ">
-          <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="mt-2 img-fluid">
+          <img src="<%= auto.imageUrl %>" alt="<%= auto.name %>" class="mt-2 img-fluid">
         </div>
         <div class="col-xl-5 col-sm-7 col-md-6  col pt-4 text-light text-center d-flex flex-column justify-content-center">
-          <h2><%= product.name %></h2>
-          <p><%= product.description %></p>
-          <p>Precio: $<%= product.price %></p>
+          <h2><%= auto.modelo %></h2>
+          <p><%= auto.marca %></p>
+          <p>Precio: $<%= auto.precio %></p>
           <div class="buttons my-4">
-            <a href="/addToCart/<%= product.id %>" class="btn btn-outline-light">Agregar al carrito</a>
+            <a href="/addToCart/<%= auto.id %>" class="btn btn-outline-light">Agregar al carrito</a>
             <a href="/" class="btn btn-outline-light">Seguir viendo</a>
           </div>
         </div>
