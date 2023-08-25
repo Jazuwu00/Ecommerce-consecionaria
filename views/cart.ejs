@@ -21,9 +21,18 @@
           <div class="col-xl-9 col-12 text-center mb-3">
             <div class="card d-flex flex-sm-row flex-column mt-3" style="background-color: rgba(8, 9, 17, 0.705);">
               <div class="card-body col d-flex  justify-content-around text-light">
+                <% if (item.type === 'auto') { %>
                 <p><%= item.marca %> <%= item.modelo %></p>
                 <p>Cantidad: <%= item.quantity %></p>
                 <p>Precio: <%= item.precio * item.quantity %> USD</p>
+
+                <% } else if (item.type === 'accesorio') { %>
+                 <p> <%= item.nombre %> </p>
+                 <p>Cantidad: <%= item.quantity %></p>
+                 <p>Precio: <%= item.precio * item.quantity %></p>
+                <% } %>
+               
+                
               </div>
               <div class="col-xl-3 col col-sm-4 d-flex align-items-center justify-content-around">
                 <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
@@ -32,7 +41,11 @@
                   <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>
 
-                <a href="/autos/<%= item.codAD0KM %> " class="btn btn-success mb-3 mr-sm-3">Ver</a>
+                <a href="<% if (item.type === 'auto') { %>  
+                  /autos/<% item.codAD0KM %> 
+                  <% }else if (item.type === 'accesorio') {%>
+                    /product/<% item.codACC %> 
+                    <% } %>" class="btn btn-success mb-3 mr-sm-3">Ver</a>
               
                 </form>
               </div>
@@ -46,6 +59,7 @@
             <p>Total:</p> 
           </div>
           <div class="col-6 text-center text-light">
+            
             <form action="/payment" method="POST">
               <button type="submit" class="btn btn-success">Comprar</button>
             </form>

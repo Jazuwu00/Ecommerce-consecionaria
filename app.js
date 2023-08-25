@@ -20,7 +20,6 @@ connection.connect((err) => {
 });
 
 
-// Configurar el motor de plantillas EJS
 app.set('view engine', 'ejs');
 
 
@@ -30,7 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-const cart = []; // Arreglo para almacenar los productos en el carrito
+const cart = []; // Arreglo para productos en el carrito
 
 
   
@@ -38,34 +37,53 @@ const cart = []; // Arreglo para almacenar los productos en el carrito
   
   // Ruta para agregar productos al carrito
   app.get('/addToCart/:id', (req, res) => {
-    const autoIdToShow = req.params.id;
+    const idProducto = req.params.id;
   
     connection.query(
       'SELECT * FROM autodisponible0km WHERE codAD0KM = ?',
-      [autoIdToShow],
-      (error, results) => {
+      [idProducto],
+      (error, autoResults) => {
         if (error) {
           res.status(500).send('Error al obtener el auto');
-        } else if (results.length > 0) {
-          const existingProduct = cart.find(item => item.id === autoIdToShow);
+        } else if (autoResults.length > 0) {
+          // Producto es un auto
+          const existingAuto = cart.find(item => item.id === idProducto);
   
-          if (existingProduct) {
-            
-            existingProduct.quantity += 1;
+          if (existingAuto) {
+            existingAuto.quantity += 1;
           } else {
-           
-            cart.push({ id: autoIdToShow, quantity: 1, ...results[0] });
+            cart.push({ id: idProducto, type: 'auto', quantity: 1, ...autoResults[0] });
           }
   
-          // Redireccionar al carrito o mostrar un mensaje de éxito
           res.redirect('/cart');
-          console.log(cart)
         } else {
-          res.send('No se encontró el auto');
+          connection.query(
+            'SELECT * FROM accesorio WHERE codACC = ?',
+            [idProducto],
+            (error, accesorioResults) => {
+              if (error) {
+                res.status(500).send('Error al obtener el accesorio');
+              } else if (accesorioResults.length > 0) {
+                // Producto es un accesorio
+                const existingAccesorio = cart.find(item => item.id === idProducto);
+  
+                if (existingAccesorio) {
+                  existingAccesorio.quantity += 1;
+                } else {
+                  cart.push({ id: idProducto, type: 'accesorio', quantity: 1, ...accesorioResults[0] });
+                }
+  
+                res.redirect('/cart');
+              } else {
+                res.send('No se encontró el producto');
+              }
+            }
+          );
         }
       }
     );
   });
+  
 // Ruta para eliminar productos del carrito
 app.post('/removeFromCart', (req, res) => {
   const productId = req.body.productId;
@@ -83,7 +101,7 @@ app.post('/removeFromCart', (req, res) => {
 
 // Ruta para mostrar la página de métodos de pago
 app.post('/payment', (req, res) => {
-  // Supongamos que tienes una lista de métodos de pago disponibles
+  
   const paymentMethods = [
     { id: 1, name: 'Tarjeta de crédito' },
     { id: 2, name: 'PayPal' },
@@ -108,6 +126,12 @@ app.get('/thankyou', (req, res) => {
   res.render('thankyou');
 });
 
+  // Ruta para mostrar el contenido del carrito
+  app.get('/cart', (req, res) => {
+    res.render('cart', { cart });
+  });
+
+  
 // ruta principal
   app.get('/', (req, res) => {
     res.render('index');
@@ -120,49 +144,42 @@ app.get('/autos', (req, res) => {
   
   connection.query(query, (err, results) => {
     if (err) {
-      console.error('Error retrieving autos:', err);
-      res.status(500).send('Error retrieving autos');
+      console.error( err);
+    
       return;
     }
     
-    // Renderiza la página 'autos' con los resultados de la consulta
+    
     res.render('autos', { autos: results });
   });
 });
 
 // Ruta para mostrar los productos desde la base de datos
-app.get('/productos', (req, res) => {
+app.get('/products', (req, res) => {
   const query = 'SELECT * FROM accesorio';
   
   connection.query(query, (err, results) => {
     if (err) {
-      console.error('Error retrieving products:', err);
-      res.status(500).send('Error retrieving products');
+      console.error(err);
+      
       return;
     }
     
-    // Renderiza la página 'productos' con los resultados de la consulta
-    res.render('productos', { productos: results });
+   
+    res.render('products', { products: results });
   });
 });
   
-  // Ruta para mostrar el contenido del carrito
-app.get('/cart', (req, res) => {
-  res.render('cart', { cart });
-});
 
 
 
   // Ruta para visualizar un producto específico
-
-
-
 app.get('/autos/:id', (req, res) => {
-  const autoIdToShow = req.params.id;
+  const idProducto = req.params.id;
 
   connection.query(
     'SELECT * FROM autodisponible0km WHERE codAD0KM = ?',
-    [autoIdToShow],
+    [idProducto],
     (error, results) => {
       if (error) {
         res.status(500).send('Error al obtener el auto');
@@ -170,7 +187,26 @@ app.get('/autos/:id', (req, res) => {
         const autoToShow = results[0];
         res.render('auto', { auto: autoToShow });
       } else {
-        res.send('No se encontró el auto con el ID ' + autoIdToShow);
+        res.send('No se encontró el auto con el ID ' + idProducto);
+      }
+    }
+  );
+});
+
+app.get('/product/:id', (req, res) => {
+  const idProducto = req.params.id;
+
+  connection.query(
+    'SELECT * FROM accesorio WHERE codACC = ?',
+    [idProducto],
+    (error, results) => {
+      if (error) {
+        res.status(500).send('Error al obtener el accesorio');
+      } else if (results.length > 0) {
+        const productToShow = results[0];
+        res.render('product', { product: productToShow });
+      } else {
+        res.send('No se encontró el accesorio con el ID ' + idProducto);
       }
     }
   );

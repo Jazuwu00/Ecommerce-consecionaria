@@ -13,23 +13,24 @@
   <!-- Contenido principal -->
   <div class="main-content">
     <div class="producto">
-      <h1 class="text-center text-light pt-5"> <%= category %> </h1>
-      <div class="container ">
-        <div class="row py-5">
+      <h1 class="text-center text-light pt-5"> Accesorios </h1>
+      <div class="container text-center ">
+        <div class="row py-5 mx-auto d-flex justify-content-center">
           <% products.forEach(product => { %>
           <div class="col-sm-6 col-md-4 col-lg-3 p-2 "> 
-            <div class="card text-center" style="background-color: rgba(8, 9, 17, 0.705); height: 390px;" >
+            <div class="card text-center" style="background-color: rgba(8, 9, 17, 0.705); height: 420px;" >
               <a href="" class="text-light">
-                <img src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>"  alt="<%= auto.marca %>" class="card-img-top" alt="" height="200px">
+                <img src="data:image/jpg;base64, <%= Buffer.from(product.img).toString('base64') %>"  alt="<%= product.nombre %>" class="card-img-top" alt="" height="200px">
                 <div class="card-body" >
-                  <h4><%= product.name %></h4>
-                  <p><%= product.price %> USD</p>
+                  <h3><%= product.nombre %></h3>
+                  
+                  <p> Stock : <%= product.stock %> </p>
                 </div>
               </a>
               <div  class="mt-3"  style="height: 50px;">
                 
-                <a href="/addToCart/<%= product.id %>"  class="btn btn-outline-light small">Comprar</a>
-                <a href="/product/<%= product.id %>" class="btn btn-outline-light small">Ver</a>
+                <a href="/addToCart/<%= product.codACC %>"  class="btn btn-outline-light small">Comprar</a>
+                <a href="/product/<%= product.codACC %>" class="btn btn-outline-light small">Ver</a>
               </div>
             </div>
           </div>
