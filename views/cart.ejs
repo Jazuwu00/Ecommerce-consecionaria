@@ -35,17 +35,27 @@
                 
               </div>
               <div class="col-xl-3 col col-sm-4 d-flex align-items-center justify-content-around">
-                <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
+                <% if (item.type === 'auto') { %>
+                  <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
                 
-                  <input type="hidden" name="productId" value="<%= item.codAD0KM %>">
-                  <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
+                    <input type="hidden" name="productId" value="<%= item.codAD0KM %>">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                  </form>
+                  <a href="autos/<% item.codAD0KM %>" class="btn btn-success mb-3 mr-sm-3">Ver</a>
 
-                <a href="<% if (item.type === 'auto') { %>  
-                  /autos/<% item.codAD0KM %> 
-                  <% }else if (item.type === 'accesorio') {%>
-                    /product/<% item.codACC %> 
-                    <% } %>" class="btn btn-success mb-3 mr-sm-3">Ver</a>
+                  <% } else if (item.type === 'accesorio') { %>
+                    
+                    <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
+                
+                      <input type="hidden" name="productId" value="<%= item.codACC %>">
+                      <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                    <a href="/product/<%= item.codACC %>" class="btn btn-success mb-3 mr-sm-3">Ver</a>
+                  <% } %>
+               
+                
+
+                
               
                 </form>
               </div>

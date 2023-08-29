@@ -14,18 +14,18 @@
 
     <div class="main-content text-light  ">
       <h1 class="text-center">Selecciona un método de pago:</h1>
-      <div class="row py-5">
+      <div class="row justify-content-center  py-5">
         
-       <div class="col-xl-12 col-12 text-center">
+       <div class="col-xl-8 col-5  bg-dark p-4 text-left">
        
-        <form action="/checkout"  method="post">
-            <% for (let i = 0; i < paymentMethods.length; i++) { %>
+        <form action="/checkout"  method="post" class="">
+            <% for (let i = 0; i < metodo.length; i++) { %>
                 <div>
-                    <input type="radio" id="<%= paymentMethods[i].id %>" name="metodo_pago" value="<%= paymentMethods[i].id %>">
-                    <label for="<%= paymentMethods[i].id %>"><%= paymentMethods[i].name %></label>
+                    <input type="radio" id="<%= metodo[i].codFP %>" name="metodo_pago" value="<%= metodo[i].codFP %>">
+                    <label for="<%= metodo[i].codFP %>"><%= metodo[i].descripcion %></label>
                 </div>
             <% } %>
-            <button type="submit "  class="btn btn-success m-3">pagar</button>
+            <button type="submit "  class="btn btn-success m-3 ">pagar</button>
         </form>
        </div>
       </div>

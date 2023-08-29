@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>eCommerce</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-UGjQ8auVK5cC+BXyfnuX9aDfG7E5BVBQHs3zvqdb1VxXc29yfBCZ3QygyL8zWOrC3CkzR/PT8rSxumzakJT1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+  <!-- Navbar -->
+  <%- include('navbar') %>
+
+   <!-- Contenido principal -->
+ 
+   <div class="main-content">
+    <div class="container py-2">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+  
+              <div class="mb-md-5 mt-md-4 pb-5">
+                <form action="/loginlog" method="POST"> <!-- Añade el formulario y su acción -->
+  
+                  <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                  <p class="text-white-50 mb-5">Ingresa tu nick y contraseña</p>
+  
+                  <div class="form-outline form-white mb-4">
+                    <label class="form-label" for="nick">Nick</label> <!-- Cambia a "nick" -->
+                    <input type="text" id="nick" name="nick" required class="form-control form-control-lg" />
+                  </div>
+  
+                  <div class="form-outline form-white mb-4">
+                    <label class="form-label" for="contrasenia">Contraseña</label> <!-- Cambia a "contrasenia" -->
+                    <input type="password" id="contrasenia" name="contrasenia" required class="form-control form-control-lg" />
+                  </div>
+  
+                  <p class="small mb-4 pb-lg-2"><a class="text-white-50" href="#!">Olvidaste la contraseña?</a></p>
+  
+                  <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+  
+                </form>
+              </div>
+  
+              <div>
+                <p class="mb-0">No tienen cuenta? <a href="#!" class="text-white-50 fw-bold">Crea una cuenta</a>
+                </p>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+ 
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Footer -->
+  <!-- Incluye el footer -->
+  <%- include('footer') %>
+</body>
+</html>

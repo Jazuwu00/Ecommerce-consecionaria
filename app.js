@@ -65,6 +65,7 @@ const cart = []; // Arreglo para productos en el carrito
                 res.status(500).send('Error al obtener el accesorio');
               } else if (accesorioResults.length > 0) {
                 // Producto es un accesorio
+                
                 const existingAccesorio = cart.find(item => item.id === idProducto);
   
                 if (existingAccesorio) {
@@ -82,6 +83,8 @@ const cart = []; // Arreglo para productos en el carrito
         }
       }
     );
+
+   
   });
   
 // Ruta para eliminar productos del carrito
@@ -101,14 +104,20 @@ app.post('/removeFromCart', (req, res) => {
 
 // Ruta para mostrar la página de métodos de pago
 app.post('/payment', (req, res) => {
-  
-  const paymentMethods = [
-    { id: 1, name: 'Tarjeta de crédito' },
-    { id: 2, name: 'PayPal' },
-    
-  ];
 
-  res.render('paymentMethods', { paymentMethods });
+  const query = 'SELECT * FROM formapago';
+  
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error( err);
+    
+      return;
+    }
+    
+    
+    res.render('paymentMethods', { metodo: results });
+  });
+
 });
 
 // Ruta para procesar el pago
@@ -212,7 +221,41 @@ app.get('/product/:id', (req, res) => {
   );
 });
 
- 
+
+// Ruta para manejar el inicio de sesión
+app.get('/login', (req, res) => {
+  
+      res.render('login'); 
+    
+  
+});
+
+
+// Ruta para manejar el inicio de sesión
+app.post('/loginlog', (req, res) => {
+  const nick = req.body.nick;
+  const contrasenia = req.body.contrasenia;
+
+  // Verificar las credenciales en la base de datos
+  connection.query( 'SELECT * FROM usuario WHERE nick = ? AND contrasenia = ?',
+  [nick, contrasenia] ,(err, results) => {
+    if (err) {
+      console.error('Error al consultar la base de datos:', err);
+      res.redirect('/login');
+    } else if (results.length === 1) {
+      // Inicio de sesión exitoso   req.session.user = results[0];
+    
+      
+      res.redirect('/'); // Redirige a la página de inicio , { datos: results }
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+});
+
+
+
 // Iniciar el servidor
 const port = 3000;
 app.listen(port, () => {
