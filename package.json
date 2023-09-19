@@ -12,7 +12,8 @@
         "jquery": "^3.7.0",
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.6.0",
-        "slick-carousel": "^1.8.1"
+        "slick-carousel": "^1.8.1",
+        "sweetalert2": "^11.7.28"
     },
     "devDependencies": {
         "nodemon": "^3.0.1"

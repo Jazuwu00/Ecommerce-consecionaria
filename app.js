@@ -22,6 +22,7 @@ connection.connect((err) => {
 
 // express-session
 app.use(session({
+  name: 'myCookie',
   secret: 'secreto', 
   resave: false,
   saveUninitialized: true,
@@ -33,24 +34,21 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.set('view engine', 'ejs');
-
-
 app.set('views', path.join(__dirname, 'views'));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-const cart = []; // Arreglo para productos en el carrito
+const cart = []; 
+app.use((req, res, next) => {
+  res.locals.cartSize = cart.length; // Almacena el tamaño del carrito en res.locals
+  next();
+});
 
-
-  
-  // Rutas
-  
-  // Ruta para agregar productos al carrito
-  app.get('/addToCart/:id', (req, res) => {
+// Ruta para agregar productos al carrito
+app.get('/addToCart/:id', (req, res) => {
     const idProducto = req.params.id;
   
     connection.query(
@@ -99,7 +97,7 @@ const cart = []; // Arreglo para productos en el carrito
     );
 
    
-  });
+});
   
 // Ruta para eliminar productos del carrito
 app.post('/removeFromCart', (req, res) => {
@@ -117,7 +115,7 @@ app.post('/removeFromCart', (req, res) => {
 
 
 // Ruta para mostrar la página de métodos de pago
-app.get('/payment', (req, res) => {
+app.post('/payment', (req, res) => {
   if (req.session.usuario) {
     // Si el usuario tiene una sesión activa, procede a mostrar la página de métodos de pago
     const query = 'SELECT * FROM formapago';
@@ -130,29 +128,20 @@ app.get('/payment', (req, res) => {
     });
   } else {
     // Si el usuario no tiene una sesión activa, redirige a la página de inicio de sesión
-    res.redirect('/login');
+    res.redirect('/login')
   }
 });
 
 // Ruta para procesar el pago
 app.post('/checkout', (req, res) => {
   const selectedPaymentMethod = req.body.paymentMethod; 
-  // Obtener el método de pago seleccionado desde el formulario
-
-  
-  // Luego redirige a la página de confirmación o agradecimiento
-  res.redirect('/thankyou');
-});
-
-// Ruta para mostrar el mensaje después de completar la compra
-app.get('/thankyou', (req, res) => {
-  res.render('thankyou');
+ res.render('thankyou');
 });
 
   // Ruta para mostrar el contenido del carrito
-  app.get('/cart', (req, res) => {
+app.get('/cart', (req, res) => {
     res.render('cart', { cart });
-  });
+});
 
   
 // ruta principal
@@ -162,41 +151,54 @@ app.get('/thankyou', (req, res) => {
 
 
   // Ruta para mostrar los autos desde la base de datos
-app.get('/autos', (req, res) => {
-  const query = 'SELECT * FROM autodisponible0km';
+  app.get('/autos', (req, res) => {
+    const itemsPerPage = 8; // Número de autos por página
+    const page = req.query.page || 1; // Obtiene el número de página de la consulta, predeterminado a 1 si no se especifica.
   
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error( err);
-    
-      return;
-    }
-    
-    
-    res.render('autos', { autos: results });
+    // Calcula el índice de inicio y fin para los autos en la página actual.
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+  
+    const query = 'SELECT * FROM autodisponible0km LIMIT ?, ?';
+  
+    connection.query(query, [startIndex, itemsPerPage], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error al obtener los autos');
+      }
+  
+      // Consulta adicional para contar el número total de autos.
+      connection.query('SELECT COUNT(*) AS totalCount FROM autodisponible0km', (countErr, countResult) => {
+        if (countErr) {
+          console.error(countErr);
+          return res.status(500).send('Error al obtener el conteo de autos');
+        }
+  
+        const autos = results;
+        const totalCount = countResult[0].totalCount;
+        const totalPages = Math.ceil(totalCount / itemsPerPage);
+  
+        res.render('autos', { autos: autos, totalPages: totalPages, currentPage: page });
+      });
+    });
   });
-});
+  
+
 
 // Ruta para mostrar los productos desde la base de datos
 app.get('/products', (req, res) => {
   const query = 'SELECT * FROM accesorio';
-  
   connection.query(query, (err, results) => {
     if (err) {
       console.error(err);
       
       return;
     }
-    
-   
     res.render('products', { products: results });
   });
 });
-  
 
-
-
-  // Ruta para visualizar un producto específico
+// Ruta para visualizar un producto específico
 app.get('/autos/:id', (req, res) => {
   const idProducto = req.params.id;
 
@@ -218,7 +220,6 @@ app.get('/autos/:id', (req, res) => {
 
 app.get('/product/:id', (req, res) => {
   const idProducto = req.params.id;
-
   connection.query(
     'SELECT * FROM accesorio WHERE codACC = ?',
     [idProducto],
@@ -235,16 +236,13 @@ app.get('/product/:id', (req, res) => {
   );
 });
 
-
-// Ruta para manejar el inicio de sesión
+// Ruta  inicio de sesión
 app.get('/login', (req, res) => {
-  
-      res.render('login'); 
-    
-  
+ 
+     res.render('login' ); 
 });
 
-// Ruta para manejar la creacion de cuenta
+// Ruta creacion de cuenta
 app.get('/createAccount', (req, res) => {
   
   res.render('createAccount'); 
@@ -252,28 +250,29 @@ app.get('/createAccount', (req, res) => {
 
 });
 
-// En una ruta protegida que requiere autenticación
+// requiere autenticacion
 app.get('/perfil', (req, res) => {
   if (req.session.usuario) {
-    // El usuario tiene una sesión activa, muestra la página de perfil
-    // Accede a req.session.usuario para obtener la información del usuario
+   res.render('profile');
+   
   } else {
-    res.redirect('/login'); // Redirige al inicio de sesión si no hay sesión activa
+    res.redirect('/login'); 
   }
 });
 
-
+// logica inicio sesion
 app.post('/loginlog', (req, res) => {
   const nick = req.body.nick;
   const contrasenia = req.body.contrasenia;
-
+  var  message = 'Error de datos'
   connection.query(
     'SELECT * FROM usuario WHERE nick = ? AND contrasenia = ?',
     [nick, contrasenia],
     (err, results) => {
       if (err) {
+       
         console.error('Error al consultar la base de datos:', err);
-        res.redirect('/login');
+        res.redirect('/login' );
       } else if (results.length === 1) {
         // Inicio de sesión exitoso
         const usuario = results[0];
@@ -281,17 +280,30 @@ app.post('/loginlog', (req, res) => {
         // Almacena el nombre del usuario en la sesión
         req.session.usuario = usuario.nick;
 
-        res.redirect('/'); // Redirige a la página de inicio
+        res.redirect('/'); 
       } else {
-        res.redirect('/login');
+       
+        res.render('login',{ message });
       }
     }
   );
 });
 
+// Ruta para cerrar la sesión
+app.get('/logout', (req, res) => {
+  // Eliminar la información de la sesión del servidor
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error al cerrar la sesión:', err);
+    }
 
+    res.clearCookie('myCookie'); 
+    res.redirect('/login');
+  });
+});
+ 
 
-// Ruta para manejar el inicio de sesión
+// Ruta creacion de cuenta
 app.post('/createAccount', (req, res) => {
   const nick = req.body.nick;
   const contrasenia = req.body.contrasenia;
@@ -311,7 +323,6 @@ app.post('/createAccount', (req, res) => {
     }
   );
 });
-
 
 
 // Iniciar el servidor

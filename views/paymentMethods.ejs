@@ -13,10 +13,17 @@
     <%- include('navbar') %>
 
     <div class="main-content text-light  ">
+      <div class="row bg-dark w-75 mx-auto">
+        <div class="col-12 border-bottom border-light p-4"> <h5><b>1 </b>ELEGI LA OPCION DE RETIRO O ENVIO DE TU COMPRA</h5></div>
+          <div class="col">
+            <p>Ingresa tu codigo postal</p>
+            <div><input type="number" placeholder="Codigo postal "></div>
+          </div>
+      </div>
       <h1 class="text-center">Selecciona un método de pago:</h1>
       <div class="row justify-content-center  py-5">
         
-       <div class="col-xl-8 col-5  bg-dark p-4 text-left">
+       <div class="col-xl-8 col-5   p-4 text-left">
        
         <form action="/checkout"  method="post" class="">
             <% for (let i = 0; i < metodo.length; i++) { %>

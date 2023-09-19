@@ -14,9 +14,13 @@
    <!-- Contenido principal -->
  
    <div class="main-content">
+    <% if (typeof message !== 'undefined' && message !== null && message !== '') { %>
+        <p class="bg-danger"> <%= message %></p>
+      <% } %>
     <div class="container py-2">
       <div class="row d-flex justify-content-center align-items-center ">
         <div class="col-12 col-md-6 col-lg-6 col-xl-5">
+        
           <div class="card  text-white" style=" background-color: rgba(8, 9, 17, 0.705);border-radius: 1rem;">
             <div class="card-body px-3 text-center">
   

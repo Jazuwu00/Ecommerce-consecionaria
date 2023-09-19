@@ -1,0 +1,21 @@
+<!-- carousel.ejs -->
+
+<div id="carCarousel" class="carousel slide" data-ride="carousel" style="height: 300px;">
+    <div class="carousel-inner">
+      <% images.forEach(function(image, index) { %>
+        
+        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+            <img src="data:image/jpg;base64, <%= Buffer.from(product.img).toString('base64') %>" alt="img" class="mt-4 img-fluid" height="200px">
+        </div>
+      <% }); %>
+    </div>
+    <a class="carousel-control-prev" href="#carCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  

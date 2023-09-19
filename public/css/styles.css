@@ -1,15 +1,12 @@
-/*background-image: url('../images/wallpaper.jpg'); 
-background-repeat: no-repeat;
-*/
-
-
+@import url('https://fonts.googleapis.com/css2?family=Inclusive+Sans&family=Montserrat:wght@400;500&display=swap');
 
 body{
     margin: 0%;
-    background-color: #313131!important;
-    color: aliceblue;
-    font-family: sans-serif!important;
+    background-color: #a5a5a5!important;
+    color: rgb(0, 0, 0);
     list-style: none!important;
+    font-family: 'Inclusive Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif!important;
 }
 
   

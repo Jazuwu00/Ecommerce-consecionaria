@@ -13,29 +13,34 @@
 
   <div class="main-content">
     <div class="container-fluid mt-5">
-      <div class="row  mx-auto d-flex justify-content-center " style="background-color: rgba(8, 9, 17, 0.705); width: 550px;">
-       
-            <div class="col-12">
-                <img src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>" class="mt-4 img-fluid" height="200px">
-                
-            <div class="text-light mt-3 text-center">
-                <h1><%= auto.modelo %> <%= auto.marca %></h1>
-                <h3></h3>
-                <p>Precio: $<%= auto.precio %></p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius cupiditate, explicabo officiis culpa, voluptatum ducimus quia modi assumenda soluta quo provident ipsam at ullam libero vel ipsa quam corporis, dolor sapiente aspernatur architecto rerum tempora sint. Ut ea quia dolores?</p>
+      <div class="row  text-light mx-auto w-75 " >
+        <div class="col-12  mx-auto col-xl-4 col-lg-7 col-md-9"> 
+          <img src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>" class="p-2 img-fluid" >
+        </div>
+        <div class="col col-xl-5 mx-auto col-md-12 p-4 text-center "> 
+          <h2><%= auto.modelo %> <%= auto.marca %></h2>
+          <p>Precio: $<%= auto.precio %></p> 
+          <span class="text-success"><b>Stock disponible</b></span>
+          <div class=" flex  mt-3">
+            <a href="/addToCart/<%= auto.codAD0KM %>" class="btn btn-success">Comprar</a>
+            <a href="/" class="btn btn-primary">Seguir viendo</a>
             </div>
-            </div>
-            
-            <div class="col-12 mb-5">
-                
-             <div class="buttons text-center mx-auto">
-            <a href="/addToCart/<%= auto.codAD0KM %>" class="btn btn-outline-light">Agregar al carrito</a>
-            <a href="/" class="btn btn-outline-light">Seguir viendo</a>
-            </div>
-       
+        </div>
+          
 
+       </div>
+      <div class="col-12 col-xl-8 text-white py-5 w-80 mx-auto ">
+        <div class="col-12 "><h5 class="border-bottom   pb-1">Descripcion</h5></div>  
+        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>  
+        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>
+        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>  
+        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>
       </div>
-     
+
+      <div class="row mt-5 text-white mx-auto">
+        <h4>Tambien puede interesarte...</h4>
+          
+      </div>
       </div>
     </div>
   </div>

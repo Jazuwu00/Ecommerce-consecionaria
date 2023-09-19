@@ -6,81 +6,84 @@
 
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
 </head>
 <body>
   <!-- Navbar -->
   <%- include('navbar') %>
-
+  <%  var total = 0; %>
   <!-- Contenido principal -->
 
   <div class="main-content">
     <h1 class="text-center text-light pt-5">Carrito de compras</h1>
-    <div class="container " >
-      <div class="row py-5 d-flex justify-content-center">
-        <% cart.forEach(item => { %>
-          <div class="col-xl-9 col-12 text-center mb-3">
-            <div class="card d-flex flex-sm-row flex-column mt-3" style="background-color: rgba(8, 9, 17, 0.705);">
-              <div class="card-body col d-flex  justify-content-around text-light">
-                <% if (item.type === 'auto') { %>
-                <p><%= item.marca %> <%= item.modelo %></p>
-                <p>Cantidad: <%= item.quantity %></p>
-                <p>Precio: <%= item.precio * item.quantity %> USD</p>
-
-                <% } else if (item.type === 'accesorio') { %>
-                 <p> <%= item.nombre %> </p>
-                 <p>Cantidad: <%= item.quantity %></p>
-                 <p>Precio: <%= item.precio * item.quantity %></p>
-                <% } %>
-               
+   
+    <div class="col-12 col-xl-6 mx-auto">
+      <table class="table  text-light   mt-5 mx-auto text-center " style="background-color:#4B4B4B" >
+        <thead>
+          <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Cant.</th>
+            <th scope="col">Total</th>
+            <th scope="col"></th>
+          </tr>
+          <tbody>
+            <% cart.forEach(item => {  %>
+              <tr>
+              <% if (item.type === 'auto') { %>
                 
-              </div>
-              <div class="col-xl-3 col col-sm-4 d-flex align-items-center justify-content-around">
-                <% if (item.type === 'auto') { %>
-                  <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
-                
-                    <input type="hidden" name="productId" value="<%= item.codAD0KM %>">
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                  </form>
-                  <a href="autos/<% item.codAD0KM %>" class="btn btn-success mb-3 mr-sm-3">Ver</a>
-
-                  <% } else if (item.type === 'accesorio') { %>
-                    
-                    <form action="/removeFromCart" class="mb-3 mr-sm-3" method="POST">
-                
-                      <input type="hidden" name="productId" value="<%= item.codACC %>">
-                      <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                    <a href="/product/<%= item.codACC %>" class="btn btn-success mb-3 mr-sm-3">Ver</a>
-                  <% } %>
-               
-                
-
-                
+                  
+                  <td class="pt-3"><%= item.marca %> <%= item.modelo %></td>
+                  <td class="pt-3"><%= item.quantity %></td>
+                  <% total += item.precio * item.quantity; %>
+                  <td class="pt-3">$<%= item.precio * item.quantity %></td>
+                  <td class=""> <form action="/removeFromCart" class="" method="POST" style="display: inline-block;">
               
-                </form>
-              </div>
-            </div>
+                    <input type="hidden" name="productId" value="<%= item.codAD0KM %>">
+                    <button type="submit" class="btn btn-danger px-3">X</button>
+                  </form>
+                  <a href="/autos/<%= item.codAD0KM %>"  class="btn btn-success  " style="display: inline-block;">Ver</a></td>
+ 
+                <% } else if (item.type === 'accesorio') { %>
+                  
+                  <td ><%= item.nombre %></th>
+                  <td > <%= item.quantity %></th>
+                  <td scope="col">$<%= item.precio * item.quantity %></th>
+                   <% total += item.precio * item.quantity; %>
+                  <td class=""> <form action="/removeFromCart" class="" method="POST" style="display: inline-block;">
+                    <input type="hidden" name="productId" value="<%= item.codACC %>">
+                    <button type="submit" class="btn btn-danger px-3">X</button>
+                  </form>
+                  <a href="/product/<%= item.codACC %>" class="btn btn-success " style="display: inline-block;">Ver</a></td>
+
+                <% } %>
+
+              </tr>
+          
+
+            <% }); %>
+          </tbody>
+        </thead>
+      </table>
+    </div>
+      
+      <div class="col-6 text-light mx-auto mt-5 text-center"  >
+        
+          <div class="  p-2" >
+            <p>Total: <%= total %> USD</p> 
           </div>
-        <% }); %>
-      </div>
-      <div class="container " style="background-color: rgba(255, 255, 255, 0); width: 300px;">
-        <div class="row pt-2 d-flex  justify-content-center">
-          <div class="col-6 text-center text-light p-2">
-            <p>Total:</p> 
-          </div>
-          <div class="col-6 text-center text-light">
+          <div class="">
             
             <form action="/payment" method="POST">
               <button type="submit" class="btn btn-success">Comprar</button>
             </form>
-          </div>
+          
         </div>
       </div>
-      </div>
+    
        
   </div>
 
-  
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
