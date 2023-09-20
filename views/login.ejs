@@ -15,7 +15,7 @@
  
    <div class="main-content">
     <% if (typeof message !== 'undefined' && message !== null && message !== '') { %>
-        <p class="bg-danger"> <%= message %></p>
+        <p class="bg-danger w-25 p-3  mx-auto text-center text-light "> <%= message %></p>
       <% } %>
     <div class="container py-2">
       <div class="row d-flex justify-content-center align-items-center ">
@@ -28,10 +28,10 @@
                 <form action="/loginlog" method="POST"> 
   
                   <h2 class="fw-bold mb-2">Login</h2>
-                  <p class="text-white-50 mb-3">Ingresa tu nick y contraseña</p>
+                  <p class="text-white-50 mb-3">Ingresa tu usuario y contraseña</p>
   
                   <div class="form-outline form-white mb-4">
-                    <label class="form-label" for="nick">Nick</label>
+                    <label class="form-label" for="nick">usuario</label>
                     <input type="text" id="nick" name="nick" required class="w-75 mx-auto form-control form-control-md" />
                   </div>
   

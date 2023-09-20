@@ -43,7 +43,7 @@ app.use(express.static('public'));
 
 const cart = []; 
 app.use((req, res, next) => {
-  res.locals.cartSize = cart.length; // Almacena el tamaño del carrito en res.locals
+  res.locals.cartSize = cart.length; 
   next();
 });
 
@@ -146,16 +146,25 @@ app.get('/cart', (req, res) => {
   
 // ruta principal
   app.get('/', (req, res) => {
-    res.render('index');
+    const query = 'SELECT * FROM autodisponible0km ';
+  
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error al obtener los autos');
+      }
+  
+    res.render('index', { autos: results } );
+    })
   });
 
 
   // Ruta para mostrar los autos desde la base de datos
   app.get('/autos', (req, res) => {
-    const itemsPerPage = 8; // Número de autos por página
-    const page = req.query.page || 1; // Obtiene el número de página de la consulta, predeterminado a 1 si no se especifica.
+    const itemsPerPage = 8;
+    const page = req.query.page || 1; 
   
-    // Calcula el índice de inicio y fin para los autos en la página actual.
+
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
   
@@ -167,7 +176,7 @@ app.get('/cart', (req, res) => {
         return res.status(500).send('Error al obtener los autos');
       }
   
-      // Consulta adicional para contar el número total de autos.
+    
       connection.query('SELECT COUNT(*) AS totalCount FROM autodisponible0km', (countErr, countResult) => {
         if (countErr) {
           console.error(countErr);
@@ -264,7 +273,7 @@ app.get('/perfil', (req, res) => {
 app.post('/loginlog', (req, res) => {
   const nick = req.body.nick;
   const contrasenia = req.body.contrasenia;
-  var  message = 'Error de datos'
+  var  message = 'Contraseña o usuario incorrecto'
   connection.query(
     'SELECT * FROM usuario WHERE nick = ? AND contrasenia = ?',
     [nick, contrasenia],

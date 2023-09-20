@@ -1,5 +1,5 @@
 <!-- navbar.ejs -->
-
+   
 <nav class="navbar navbar-expand-lg navbar-dark"  style=" background-color: #020513;">
     <a class="navbar-brand mx-5" href="/"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <svg
@@ -319,20 +319,31 @@
     <div class="collapse navbar-collapse " id="navbarNav">
       <ul class="navbar-nav ml-auto mt-2 text-center">
 
-        <li class=" " >
-         <a class="d-flex text-light text-decoration-none" href="/cart"><div class="row p-0 m-0 mr-3"><img src="https://cdn.jsdelivr.net/gh/persano/MaximusWebFonts@1.8.5.5.1/fi-rr-shopping-cart.svg" height="30px" alt="imagen de enlace" class="position-relative"><small id="contador" class="position-absolute ml-3 bg-success rounded-circle px-2 "><%= cartSize %></small> </div><p class="h5">Mi carrito</p> </a>
-      
-        <li><br></li>
-        <li class="  mx-xl-3 "> <% if (typeof session !== 'undefined' && typeof session.usuario !== 'undefined') { %>
+        <li class="mx-md-2 mx-auto  " >
+         <a class="d-flex text-light text-decoration-none" href="/cart">
+            <div class="row mr-1">
+               <img  src="https://cdn.jsdelivr.net/gh/persano/MaximusWebFonts@1.8.5.5.1/fi-rr-shopping-cart.svg" height="20px" alt="imagen de enlace" class="position-relative">
+               <small  class="position-absolute bg-success rounded-circle ml-3   px-1 ">
+                  <%= cartSize %>
+               </small> 
+
+               </div>
+               <p class="h5 ml-2">Mi carrito</p> 
+            </a>
+         </li>
+
+        <li class=" mx-md-2  mx-auto ">
+
+          <% if (typeof session !== 'undefined' && typeof session.usuario !== 'undefined') { %>
           <a href="/perfil" class="d-flex   text-light"> 
-           
-            <img href="https://www.maximus.com.ar/LOGIN/login/maximus.aspx"  height="30px" alt="imagen de enlace" src="https://cdn.jsdelivr.net/gh/persano/MaximusWebFonts@1.8.5.5.1/fi-rr-user.svg" >
-           
+            <img height="20px"  alt="imagen de enlace" src="https://cdn.jsdelivr.net/gh/persano/MaximusWebFonts@1.8.5.5.1/fi-rr-user.svg" >
             <p class=" h5 ml-2"><%= session.usuario %></p>
-               
             </a>
         <% } else { %>
-          <a href="/login" class=" d-flex  text-light  text-decoration-none"> <img href="https://www.maximus.com.ar/LOGIN/login/maximus.aspx" src="https://cdn.jsdelivr.net/gh/persano/MaximusWebFonts@1.8.5.5.1/fi-rr-user.svg" height="30px" alt="imagen de enlace" > <p class="h5 ml-2">Iniciar sesión</p></a>
+          <a href="/login" class=" d-flex  text-light  text-decoration-none"> 
+            <img href="https://www.maximus.com.ar/LOGIN/login/maximus.aspx" src="https://cdn.jsdelivr.net/gh/persano/MaximusWebFonts@1.8.5.5.1/fi-rr-user.svg" height="20px" alt="imagen de enlace" >
+             <p class="h5 ml-2 ">Iniciar sesión</p>
+            </a>
         <% } %>
         </li>
         

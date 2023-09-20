@@ -13,29 +13,50 @@
     <%- include('navbar') %>
 
     <div class="main-content text-light  ">
-      <div class="row bg-dark w-75 mx-auto">
-        <div class="col-12 border-bottom border-light p-4"> <h5><b>1 </b>ELEGI LA OPCION DE RETIRO O ENVIO DE TU COMPRA</h5></div>
-          <div class="col">
-            <p>Ingresa tu codigo postal</p>
-            <div><input type="number" placeholder="Codigo postal "></div>
+      <div class="row bg-dark w-50 mx-auto">
+        <div class="col-12 border-bottom border-light p-4"> 
+          <h5><b>1 </b>ELEGI LA OPCION DE RETIRO O ENVIO DE TU COMPRA</h5>
+        </div>
+          <div class="col-xl-6 col-12 py-3 text-center">
+            <p>Selecciona tu provincia</p>
+            <div><select name="select" class="bg-dark text-light w-50">
+              <option value="value1">Value 1</option>
+              <option value="value2" selected>Value 2</option>
+              <option value="value3">Value 3</option>
+            </select></div>
           </div>
-      </div>
-      <h1 class="text-center">Selecciona un método de pago:</h1>
-      <div class="row justify-content-center  py-5">
-        
-       <div class="col-xl-8 col-5   p-4 text-left">
-       
-        <form action="/checkout"  method="post" class="">
-            <% for (let i = 0; i < metodo.length; i++) { %>
-                <div>
-                    <input type="radio" id="<%= metodo[i].codFP %>" name="metodo_pago" value="<%= metodo[i].codFP %>">
-                    <label for="<%= metodo[i].codFP %>"><%= metodo[i].descripcion %></label>
+          <div class="col-xl-6 col-12 py-3 text-center">
+            <p>Ingresa tu codigo postal</p>
+            <div><input type="number" placeholder="Codigo postal "  class="bg-dark text-light w-50"></div>
+          </div>
+              </div>
+              
+              <div class="row bg-dark mt-3 w-50 mx-auto">
+                <div class="col-xl-12 col-12 border border-light p-4"> 
+                  <h5><b>2 </b>ELEGI LA OPCION DE RETIRO O ENVIO DE TU COMPRA</h5>
                 </div>
-            <% } %>
-            <button type="submit "  class="btn btn-success m-3 ">pagar</button>
-        </form>
-       </div>
-      </div>
+                  <div class="col-12  py-4">
+                    <p>Ingresa tu codigo postal</p>
+                    <div><input type="number" placeholder="Codigo postal "></div>
+                  </div>
+             </div>
+          <div class="row bg-dark mt-3 w-50 mx-auto">
+
+            <div class="col-12 border border-light p-4"> 
+              <h5><b>3 </b>SELECCIONA METODO DE PAGO</h5>
+            </div>
+              <div class="col py-2 text-center">
+                <form action="/checkout"  method="post" class="">
+                  <% for (let i = 0; i < metodo.length; i++) { %>
+                      <div>
+                          <input type="radio" id="<%= metodo[i].codFP %>" name="metodo_pago" value="<%= metodo[i].codFP %>">
+                          <label for="<%= metodo[i].codFP %>"><%= metodo[i].descripcion %></label>
+                      </div>
+                  <% } %>
+                  <button type="submit "  class="btn btn-success m-3 ">pagar</button>
+              </form>
+           </div>
+         </div>
     </div>
 
    <!-- Incluye el footer -->
