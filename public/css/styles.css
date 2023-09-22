@@ -6,9 +6,28 @@ body{
     color: rgb(0, 0, 0);
     list-style: none!important;
     font-family: 'Inclusive Sans', sans-serif;
-  font-family: 'Montserrat', sans-serif!important;
+    font-family: 'Montserrat', sans-serif!important;
 }
 
+#banner {
+  background-image: url("../images/banner.jpg");
+  filter: brightness(70%);
+  padding: 0%;
+  margin: 0%;
+  width: 100%;
+  height: 880px;
+  background-size: cover;
+  position: relative;
+  background-position: center;
+}
+#banner h3{
+  position: absolute; 
+  top: 19%; left: 10%; 
+  text-transform: uppercase; 
+  font-size:6rem;
+  width: 70%;
+  font-weight: bolder;
+}
   
  /* Estilos para el contenido principal */
 .main-content {
@@ -29,16 +48,35 @@ body{
   }
   
 
+#card:hover{
+    border: 2px solid black;
+    
+}
 
 
-  @media only screen and (max-width: 576px) {
-  .producto .card{
-    height: 430px;
-   }
-  }
-  
-  @media only screen and (min-width: 576px) {
-    .producto .card{
-      height: 330px;
-     }
+  @media only screen and (max-width: 1276px) {
+ 
+     #banner {
+      height: 380px;
+    }
+    #banner h3{
+      padding: 2px;
+      position: absolute; top: 14%; left: 5%; 
+      font-size:2rem;
+      width: 80%;
+    }
+}
+
+
+@media only screen and (min-width: 1276px ) and (max-width:1800px) {
+ 
+  #banner {
+   height: 680px;
+ }
+ #banner h3{
+   padding: 2px;
+   position: absolute; top: 10%; left: 10%; 
+   font-size:5rem;
+   width: 50%;
+ }
 }
