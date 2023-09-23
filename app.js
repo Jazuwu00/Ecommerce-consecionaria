@@ -1,24 +1,11 @@
 const express = require('express');
+const util = require('util');
 const bodyParser = require('body-parser');
 const app = express();
 const path = require('path'); // Importa el módulo 'path'
 const mysql = require('mysql2');
 const session= require('express-session');
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '', 
-  database: 'concesionarialpp', 
-});
-
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    return;
-  }
-  console.log('Connected to the database');
-});
+const nodemailer = require('nodemailer');
 
 // express-session
 app.use(session({
@@ -41,12 +28,50 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+//conexion sql
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '', 
+  database: 'concesionarialpp', 
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    return;
+  }
+  console.log('Connected to the database');
+});
+
 const cart = []; 
+
 app.use((req, res, next) => {
   res.locals.cartSize = cart.length; 
   next();
 });
 
+// Ruta para mostrar el contenido del carrito
+app.get('/cart', (req, res) => {
+    console.log(cart)
+      res.render('cart', { cart });
+});
+  
+    
+// ruta principal
+app.get('/', (req, res) => {
+      const query = 'SELECT * FROM autodisponible0km ';
+    
+      connection.query(query, (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('Error al obtener los autos');
+        }
+    
+      res.render('index', { autos: results } );
+      })
+});
+  
 // Ruta para agregar productos al carrito
 app.get('/addToCart/:id', (req, res) => {
     const idProducto = req.params.id;
@@ -100,17 +125,81 @@ app.get('/addToCart/:id', (req, res) => {
 });
   
 // Ruta para eliminar productos del carrito
-app.post('/removeFromCart', (req, res) => {
-  const productId = req.body.productId;
-
-  // Buscar el producto en el carrito
+app.get('/removeFromCart', (req, res) => {
+  
+  const productId = req.query.productId;
+  
   const productIndex = cart.findIndex((item) => item.id === productId);
 
   if (productIndex !== -1) {
+    console.log('eliminando')
     cart.splice(productIndex, 1); // Eliminar el producto del carrito
+    console.log(cart)
   }
 
   res.redirect(`/cart`);
+});
+
+//Configuracion Mail
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'jazsaraviav@gmail.com',
+    pass: 'ztty pfku pmyb oxqj',
+  },
+});
+
+const sendMailAsync = util.promisify(transporter.sendMail).bind(transporter);
+
+app.get('/sendMail', async (req, res) => {
+  try {
+    // Genera la tabla HTML con los datos del carrito
+    const cartTable = `
+      <table style="text-align:center;  color: black; border-collapse: collapse; width: 70%;">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${cart.map(item => `
+            <tr>
+              <td>${item.type === 'auto' ? `${item.marca} ${item.modelo}` : item.nombre}</td>
+              <td>${item.quantity }</td>
+              <td>$${item.precio !== undefined ? item.precio : 0}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    // Calcula el total
+
+    const total = cart.reduce((acc, item) => acc +( item.quantity * (item.precio !== undefined ? item.precio : 0)), 0);
+
+    const mailOptions = {
+      from: 'jazsaraviav@gmail.com',
+      to: 'jsaraviaa98@gmail.com',
+      subject: '<h4 style=" color: black;  ">Datos de tu compra </h4>',
+      html: `
+        <div style=" color: black; padding: 30px; ">
+          <p>Detalles de tu Compra:</p>
+          ${cartTable}
+          <p>Total: $${total}</p>
+        </div>
+      `,
+    };
+
+    await sendMailAsync(mailOptions);
+
+    console.log('Correo electrónico enviado con éxito');
+    res.render('thankyou');
+  } catch (error) {
+    console.error('Error al enviar el correo electrónico:', error);
+    res.status(500).send('Error al enviar el correo electrónico');
+  }
 });
 
 
@@ -132,67 +221,86 @@ app.post('/payment', (req, res) => {
   }
 });
 
-// Ruta para procesar el pago
-app.post('/checkout', (req, res) => {
-  const selectedPaymentMethod = req.body.paymentMethod; 
- res.render('thankyou');
-});
-
-  // Ruta para mostrar el contenido del carrito
-app.get('/cart', (req, res) => {
-    res.render('cart', { cart });
-});
-
-  
-// ruta principal
-  app.get('/', (req, res) => {
-    const query = 'SELECT * FROM autodisponible0km ';
-  
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send('Error al obtener los autos');
-      }
-  
-    res.render('index', { autos: results } );
-    })
-  });
-
-
   // Ruta para mostrar los autos desde la base de datos
   app.get('/autos', (req, res) => {
     const itemsPerPage = 8;
     const page = req.query.page || 1; 
-  
-
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-  
     const query = 'SELECT * FROM autodisponible0km LIMIT ?, ?';
-  
     connection.query(query, [startIndex, itemsPerPage], (err, results) => {
       if (err) {
         console.error(err);
         return res.status(500).send('Error al obtener los autos');
       }
-  
-    
       connection.query('SELECT COUNT(*) AS totalCount FROM autodisponible0km', (countErr, countResult) => {
         if (countErr) {
           console.error(countErr);
           return res.status(500).send('Error al obtener el conteo de autos');
         }
-  
         const autos = results;
         const totalCount = countResult[0].totalCount;
         const totalPages = Math.ceil(totalCount / itemsPerPage);
   
         res.render('autos', { autos: autos, totalPages: totalPages, currentPage: page });
+        
       });
     });
   });
   
+  // Ruta para reparaciones
+  app.get('/reparacion', (req, res) => {
+    const itemsPerPage = 8;
+    const page = req.query.page || 1; 
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const query = 'SELECT * FROM reparaciondisponible LIMIT ?, ?';
+    connection.query(query, [startIndex, itemsPerPage], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error al obtener los autos');
+      } 
+      connection.query('SELECT COUNT(*) AS totalCount FROM reparaciondisponible', (countErr, countResult) => {
+        if (countErr) {
+          console.error(countErr);
+          return res.status(500).send('Error al obtener el conteo de autos');
+        }
+  
+        const reparaciones = results;
+        const totalCount = countResult[0].totalCount;
+        const totalPages = Math.ceil(totalCount / itemsPerPage);
+  
+        res.render('reparacion', { reparaciones: reparaciones, totalPages: totalPages, currentPage: page });
+      });
+    });
+  });
+  
+ // Ruta para autos usados
+ app.get('/usados', (req, res) => {
+  const itemsPerPage = 8;
+  const page = req.query.page || 1; 
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const query = 'SELECT * FROM autousado LIMIT ?, ?';
+  connection.query(query, [startIndex, itemsPerPage], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error al obtener los autos');
+    } 
+    connection.query('SELECT COUNT(*) AS totalCount FROM autousado ', (countErr, countResult) => {
+      if (countErr) {
+        console.error(countErr);
+        return res.status(500).send('Error al obtener el conteo de autos');
+      }
 
+      const autos = results;
+      const totalCount = countResult[0].totalCount;
+      const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+      res.render('usados', { autos: autos, totalPages: totalPages, currentPage: page });
+    });
+  });
+});
 
 // Ruta para mostrar los productos desde la base de datos
 app.get('/products', (req, res) => {

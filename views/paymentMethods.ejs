@@ -46,7 +46,7 @@
               <h5><b>3 </b>SELECCIONA METODO DE PAGO</h5>
             </div>
               <div class="col py-2 text-center">
-                <form action="/checkout"  method="post" class="">
+                <form action="/sendMail"  method="GET" class="">
                   <% for (let i = 0; i < metodo.length; i++) { %>
                       <div>
                           <input type="radio" id="<%= metodo[i].codFP %>" name="metodo_pago" value="<%= metodo[i].codFP %>">

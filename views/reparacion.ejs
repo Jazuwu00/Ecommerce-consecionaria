@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>eCommerce</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-UGjQ8auVK5cC+BXyfnuX9aDfG7E5BVBQHs3zvqdb1VxXc29yfBCZ3QygyL8zWOrC3CkzR/PT8rSxumzakJT1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <%- include('navbar') %>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="producto ">
+      <h1 class="text-center  text-dark pt-5">Reparaciones disponibles</h1>
+        <div class="row container  py-5 mx-auto ">
+          
+            <% reparaciones.forEach(reparacion => { %>
+       <div class="col-12 col-xl-3 m-4  p-4   d-flex flex-column justify-content-center" style=" background-color: antiquewhite;">
+        
+        <h3 class=""><%= reparacion.nombre %></h3>
+        <h6 class="border-bottom border-dark w-50 mt-2">Descripcion</h6>
+        
+        <p><%= reparacion.detalles %></p>
+        <div  class="mt-auto mx-auto"  style="height: 50px;">
+                
+            <a href="/addToCart/<%= reparacion.codRDISP %>"  class="btn btn-outline-dark small ">Solicitar</a>
+
+          </div>
+       </div>
+
+          <% }); %>
+      </div>
+        <!-- Agrega botones de navegación para la paginación -->
+        <div class="pagination flex justify-content-center ">
+          
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="/reparacion?page=<%= i %>" class=" bg-dark <%= i === currentPage ? 'active' : '' %> text-white mx-2 pointer  px-2 border rounded-circle "><%= i %></a>
+          <% } %>
+       
+        </div>
+
+      </div>
+   
+
+
+  </div>
+  
+
+  <!-- Incluye el footer -->
+  <%- include('footer') %>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

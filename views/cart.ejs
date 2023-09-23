@@ -25,9 +25,12 @@
         <p>Agrega primero un producto para poder visualizar el carrito </p>
         <a class="btn btn-dark" href="/">Seguir viendo</a>
       </div>
+
       <% } else { %>
         <h1 class="text-center text-light pt-5">Carrito de compras</h1>
         <div class="col-12 col-xl-6 mx-auto">
+          <form action="/payment" method="POST">
+
           <table class="table  text-light   mt-5 mx-auto text-center bg-dark"  >
             <thead>
               <tr>
@@ -37,61 +40,46 @@
                 <th scope="col"></th>
               </tr>
               <tbody>
-                <% cart.forEach(item => {  %>
+                <% cart.forEach(item => { %>
                   <tr>
-                  <% if (item.type === 'auto') { %>
-                    
-                    
-                      
+                    <% if (item.type === 'auto') { %>
                       <td class="pt-3"><%= item.marca %> <%= item.modelo %></td>
                       <td class="pt-3"><%= item.quantity %></td>
                       <% total += item.precio * item.quantity; %>
                       <td class="pt-3">$<%= item.precio * item.quantity %></td>
-                      <td class=""> <form action="/removeFromCart" class="" method="POST" style="display: inline-block;">
-                  
-                        <input type="hidden" name="productId" value="<%= item.codAD0KM %>">
-                        <button type="submit" class="btn btn-danger px-3">X</button>
-                      </form>
-                      <a href="/autos/<%= item.codAD0KM %>"  class="btn btn-success  " style="display: inline-block;">Ver</a></td>
-     
+                      <td class="">
+                        <a href="/removeFromCart?productId=<%= item.codAD0KM %>" class="btn btn-danger px-3">X</a>
+
+                        <a href="/autos/<%= item.codAD0KM %>" class="btn btn-success" style="display: inline-block;">Ver</a>
+                      </td>
                     <% } else if (item.type === 'accesorio') { %>
-                      
-                      <td ><%= item.nombre %></th>
-                      <td > <%= item.quantity %></th>
-                      <td scope="col">$<%= item.precio * item.quantity %></th>
-                       <% total += item.precio * item.quantity; %>
-                      <td class=""> <form action="/removeFromCart" class="" method="POST" style="display: inline-block;">
-                        <input type="hidden" name="productId" value="<%= item.codACC %>">
-                        <button type="submit" class="btn btn-danger px-3">X</button>
-                      </form>
-                      <a href="/product/<%= item.codACC %>" class="btn btn-success " style="display: inline-block;">Ver</a></td>
-    
+                      <td><%= item.nombre %></td>
+                      <td><%= item.quantity %></td>
+                      <% total += item.precio * item.quantity; %>
+                      <td>$<%= item.precio * item.quantity %></td>
+                      <td class="">
+                        <a href="/removeFromCart?productId=<%= item.codACC %>" class="btn btn-danger px-3">X</a>
+                        <a href="/product/<%= item.codACC %>" class="btn btn-success" style="display: inline-block;">Ver</a>
+                      </td>
                     <% } %>
-    
                   </tr>
-              
-    
                 <% }); %>
               </tbody>
             </thead>
           </table>
-        </div>
-          
-          <div class="col-6 col-xl-4 text-light mx-auto my-5 p-3 text-center bg-dark  "  >
-              <p>Resumen de compra</p>
-              <hr class="bg-light">
-              <div class="  p-2" >
-                <p><b>Total:</b> <%= total %> USD</p> 
-              </div>
-              <div class="">
-                
-                <form action="/payment" method="POST">
-                  <button type="submit" class="btn btn-success">Comprar</button>
-                </form>
-              
+
+          <div class="col-6 col-xl-4 text-light mx-auto my-5 p-3 text-center bg-dark">
+            <p>Resumen de compra</p>
+            <hr class="bg-light">
+            <div class="p-2">
+              <p><b>Total:</b> <%= total %> USD</p>
             </div>
+      
+              <button type="submit" class="btn btn-success">Comprar</button>
+       
           </div>
-         
+        </form>
+      </div>
       <% } %>
     
     
