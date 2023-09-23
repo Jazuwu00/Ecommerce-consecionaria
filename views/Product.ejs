@@ -13,24 +13,59 @@
 
 
   <div class="main-content">
-    <div class="container-fluid mt-5">
-      <div class="row  text-light mx-auto w-75 " >
-        <div class="col-12  mx-auto col-xl-5 col-md-6  "> 
-          <img src="data:image/jpg;base64, <%= Buffer.from(product.img).toString('base64') %>" class="p-2 img-fluid" >
-        </div>
+    <div class=" container mt-5">
+      <div class="row text-light mx-auto" >
+        <div class="col-12  mx-auto col-xl-5 col-md-6 bg-danger d-flex justify-content-center "> 
+          <% if (product.img ) { %>
+            <img  src="data:image/jpg;base64, <%= Buffer.from(product.img).toString('base64') %>"   alt="img" height="200px" width="350px">
+            <% } else { %>
+              <img src="/images/autos.jpg"  alt="autoimg" height="200px" width="350px">
+            <% } %>
+        </div><% console.log('Tipo de producto:', type); %>
         <div class="col col-xl-5 mx-auto  p-4 text-center "> 
-          <h2><%= product.nombre %></h2>
-          <p>Precio: $<%= product.stock %></p> 
-          <span class="text-success"><b>Stock disponible</b></span>
-          <div class=" flex  mt-3">
-            <a href="/addToCart/<%= product.codACC %>" class="btn btn-success">Comprar</a>
-            <a href="/" class="btn btn-primary">Seguir viendo</a>
+          <% if (type === 'autonuevo') { %>
+            <h2 class="pt-3"><%= product.marca %> <%= product.modelo %></h2>
+           
+            <p class="pt-3">$<%= product.precio  %></p>
+            <div class="mt-auto">
+              <a href="/removeFromCart?productId=<%= product.codAD0KM %>" class="btn btn-success">X</a>
+              <a href="/product/<%= product.type %>/<%= product.codAD0KM %>" class="btn btn-success" style="display: inline-block;">Ver</a>
             </div>
+          <% } else if (type === 'accesorio') { %>
+            <h2><%=( product.nombre ) %></h2>
+            <p>Precio: $<%= product.precio %></p> 
+            <p></p>
+            <span class="text-success"><b>Stock disponible</b></span>
+            <div class="   mt-auto">
+              <a href="/addToCart/<%= product.codACC %>" class="btn btn-success">Comprar</a>
+              <a href="/" class="btn btn-primary">Seguir viendo</a>
+              </div>
+          <% } else if (type === 'autousado') { %>
+            <h2 class="pt-3"><%= product.marca %> <%= product.modelo %></h2>
+            <span class="text-success"><b>Stock disponible</b></span>
+            <p class="pt-3">$<%= product.precioventa %></p>
+            <div class="   mt-auto">
+              <a href="/addToCart/<%= product.codAU %>" class="btn btn-success">Comprar</a>
+              <a href="/" class="btn btn-primary">Seguir viendo</a>
+              </div>
+          <% } else  if (type === 'reparacion') {%>
+            
+            <h2 class="pt-3"> Reparacion de <%= product.nombre %> </h2>
+            <p class="pt-3"><%= product.detalles %></p>
+            <span class=" text-success"><b>Stock disponible</b></span>
+            <div class="mt-auto">
+              <a href="/addToCart/<%= product.codRDSIP %>" class="btn btn-success">comprar</a>
+              <a href="/" class="btn btn-primary">seguir viendo</a>
+            </div>
+         <% } %>
+
+
+         
         </div>
           
 
        </div>
-      <div class="col-12 col-xl-8 text-white py-5 w-80 mx-auto ">
+      <div class="col-12  text-white py-5  mx-auto ">
         <div class="col-12 "><h5 class="border-bottom   pb-1">Descripcion</h5></div>  
         <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>  
         <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>

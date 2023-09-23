@@ -42,15 +42,14 @@
               <tbody>
                 <% cart.forEach(item => { %>
                   <tr>
-                    <% if (item.type === 'auto') { %>
+                    <% if (item.type === 'autonuevo') { %>
                       <td class="pt-3"><%= item.marca %> <%= item.modelo %></td>
                       <td class="pt-3"><%= item.quantity %></td>
                       <% total += item.precio * item.quantity; %>
                       <td class="pt-3">$<%= item.precio * item.quantity %></td>
                       <td class="">
                         <a href="/removeFromCart?productId=<%= item.codAD0KM %>" class="btn btn-danger px-3">X</a>
-
-                        <a href="/autos/<%= item.codAD0KM %>" class="btn btn-success" style="display: inline-block;">Ver</a>
+                        <a href="/product/<%= item.type %>/<%= item.codAD0KM %>" class="btn btn-success" style="display: inline-block;">Ver</a>
                       </td>
                     <% } else if (item.type === 'accesorio') { %>
                       <td><%= item.nombre %></td>
@@ -59,9 +58,30 @@
                       <td>$<%= item.precio * item.quantity %></td>
                       <td class="">
                         <a href="/removeFromCart?productId=<%= item.codACC %>" class="btn btn-danger px-3">X</a>
-                        <a href="/product/<%= item.codACC %>" class="btn btn-success" style="display: inline-block;">Ver</a>
+                        <a href="/product/<%= item.type %>/<%= item.codACC %>" class="btn btn-success" style="display: inline-block;">Ver</a>
                       </td>
-                    <% } %>
+                    <% } else if (item.type === 'autousado') { %>
+                      <td class="pt-3"><%= item.marca %> <%= item.modelo %></td>
+                      <td class="pt-3"><%= item.quantity %></td>
+                      <% total += item.precioventa * item.quantity; %>
+                      <td class="pt-3">$<%= item.precioventa  * item.quantity %></td>
+                      <td class="">
+                        <a href="/removeFromCart?productId=<%= item.codAU %>" class="btn btn-danger px-3">X</a>
+                        <a href="/product/<%= item.type %>/<%= item.codAU %>" class="btn btn-success" style="display: inline-block;">Ver</a>
+                      </td>
+                    <% } else if (item.type === 'reparacion') {%>
+                      <% console.log( item.codRDSIP , item.id); %>
+                      <td class="pt-3"> Reparacion de <%= item.nombre %> </td>
+                      <td class="pt-3"><%= item.quantity %> </td>
+                      <td class="pt-3">$<%=( item.precio == undefined || item.precio == null ? 0 : item.precio)  * item.quantity %></td>
+                      <% total += ( item.precio == undefined || item.precio == null ? 0 : item.precio) * item.quantity; %>
+                     
+                      <td class="">
+                        <a href="/removeFromCart?productId=<%= item.id %>" class="btn btn-danger px-3">X</a>
+                        <a href="/product/<%= item.type %>/<%= item.id %>" class="btn btn-success" style="display: inline-block;">Ver </a>
+                      </td>
+                   <% } %>
+                    
                   </tr>
                 <% }); %>
               </tbody>

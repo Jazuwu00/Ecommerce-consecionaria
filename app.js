@@ -72,57 +72,98 @@ app.get('/', (req, res) => {
       })
 });
   
-// Ruta para agregar productos al carrito
 app.get('/addToCart/:id', (req, res) => {
-    const idProducto = req.params.id;
-  
-    connection.query(
-      'SELECT * FROM autodisponible0km WHERE codAD0KM = ?',
-      [idProducto],
-      (error, autoResults) => {
-        if (error) {
-          res.status(500).send('Error al obtener el auto');
-        } else if (autoResults.length > 0) {
-          // Producto es un auto
-          const existingAuto = cart.find(item => item.id === idProducto);
-  
-          if (existingAuto) {
-            existingAuto.quantity += 1;
-          } else {
-            cart.push({ id: idProducto, type: 'auto', quantity: 1, ...autoResults[0] });
-          }
-  
-          res.redirect('/cart');
-        } else {
-          connection.query(
-            'SELECT * FROM accesorio WHERE codACC = ?',
-            [idProducto],
-            (error, accesorioResults) => {
-              if (error) {
-                res.status(500).send('Error al obtener el accesorio');
-              } else if (accesorioResults.length > 0) {
-                // Producto es un accesorio
-                
-                const existingAccesorio = cart.find(item => item.id === idProducto);
-  
-                if (existingAccesorio) {
-                  existingAccesorio.quantity += 1;
-                } else {
-                  cart.push({ id: idProducto, type: 'accesorio', quantity: 1, ...accesorioResults[0] });
-                }
-  
-                res.redirect('/cart');
-              } else {
-                res.send('No se encontró el producto');
-              }
-            }
-          );
-        }
-      }
-    );
+  const idProducto = req.params.id;
 
-   
+  connection.query(
+    'SELECT * FROM autodisponible0km WHERE codAD0KM = ?',
+    [idProducto],
+    (error, autoResults) => {
+      if (error) {
+        res.status(500).send('Error al obtener el auto');
+      } else if (autoResults.length > 0) {
+        // Producto es un auto nuevo
+        const existingAuto = cart.find(item => item.id === idProducto);
+
+        if (existingAuto) {
+          existingAuto.quantity += 1;
+        } else {
+          cart.push({ id: idProducto, type: 'autonuevo', quantity: 1, ...autoResults[0] });
+        }
+
+        res.redirect('/cart');
+      } else {
+    
+        connection.query(
+          'SELECT * FROM accesorio WHERE codACC = ?',
+          [idProducto],
+          (error, accesorioResults) => {
+            if (error) {
+              res.status(500).send('Error al obtener el accesorio');
+            } else if (accesorioResults.length > 0) {
+              // Producto es un accesorio
+              
+              const existingAccesorio = cart.find(item => item.id === idProducto);
+
+              if (existingAccesorio) {
+                existingAccesorio.quantity += 1;
+              } else {
+                cart.push({ id: idProducto, type: 'accesorio', quantity: 1, ...accesorioResults[0] });
+              }
+
+              res.redirect('/cart');
+            } else {
+              connection.query(
+                'SELECT * FROM reparaciondisponible WHERE codRDISP = ?',
+                [idProducto],
+                (error, reparacionResults) => {
+                  if (error) {
+                    res.status(500).send('Error al obtener la reparación');
+                  } else if (reparacionResults.length > 0) {
+                    // Producto es una reparación
+                    const existingReparacion = cart.find(item => item.id === idProducto);
+
+                    if (existingReparacion) {
+                      existingReparacion.quantity += 1;
+                    } else {
+                      cart.push({ id: idProducto, type: 'reparacion', quantity: 1, ...reparacionResults[0] });
+                    }
+
+                    res.redirect('/cart');
+                  } else {
+                    connection.query(
+                      'SELECT * FROM autousado WHERE codAU = ?',
+                      [idProducto],
+                      (error, autousadoResults) => {
+                        if (error) {
+                          res.status(500).send('Error al obtener el auto usado');
+                        } else if (autousadoResults.length > 0) {
+                          // Producto es un auto usado
+                          const existingAutoUsado = cart.find(item => item.id === idProducto);
+
+                          if (existingAutoUsado) {
+                            existingAutoUsado.quantity += 1;
+                          } else {
+                            cart.push({ id: idProducto, type: 'autousado', quantity: 1, ...autousadoResults[0] });
+                          }
+
+                          res.redirect('/cart');
+                        } else {
+                          res.send('No se encontró el producto');
+                        }
+                      }
+                    );
+                  }
+                }
+              );
+            }
+          }
+        );
+      }
+    }
+  );
 });
+
   
 // Ruta para eliminar productos del carrito
 app.get('/removeFromCart', (req, res) => {
@@ -304,6 +345,7 @@ app.post('/payment', (req, res) => {
 
 // Ruta para mostrar los productos desde la base de datos
 app.get('/products', (req, res) => {
+
   const query = 'SELECT * FROM accesorio';
   connection.query(query, (err, results) => {
     if (err) {
@@ -335,23 +377,51 @@ app.get('/autos/:id', (req, res) => {
   );
 });
 
-app.get('/product/:id', (req, res) => {
+app.get('/product/:type/:id', (req, res) => {
+  const tipoProducto = req.params.type;
   const idProducto = req.params.id;
+
+  let tableName;
+  let idColumnName;
+
+  // Determina la tabla y la columna de ID según el tipo de producto
+  switch (tipoProducto) {
+    case 'accesorio':
+      tableName = 'accesorio';
+      idColumnName = 'codACC';
+      break;
+    case 'autonuevo':
+      tableName = 'autodisponible0km';
+      idColumnName = 'codAD0KM';
+      break;
+    case 'autousado':
+      tableName = 'autousado';
+      idColumnName = 'codAU';
+      break;
+    case 'reparacion':
+      tableName = 'reparaciondisponible';
+      idColumnName = 'codRDISP';
+      break;
+    default:
+      return res.status(400).send('Tipo de producto no válido');
+  }
+
   connection.query(
-    'SELECT * FROM accesorio WHERE codACC = ?',
+    `SELECT * FROM ${tableName} WHERE ${idColumnName} = ?`,
     [idProducto],
     (error, results) => {
       if (error) {
-        res.status(500).send('Error al obtener el accesorio');
+        res.status(500).send('Error al obtener el producto');
       } else if (results.length > 0) {
         const productToShow = results[0];
-        res.render('product', { product: productToShow });
+        res.render('product', { product: productToShow , type: tipoProducto  });
       } else {
-        res.send('No se encontró el accesorio con el ID ' + idProducto);
+        res.send(`No se encontró el producto con el ID ${idProducto}`);
       }
     }
   );
 });
+
 
 // Ruta  inicio de sesión
 app.get('/login', (req, res) => {
