@@ -2,24 +2,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Detalle del autoo</title>
+  <title>Detalle del auto</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-UGjQ8auVK5cC+BXyfnuX9aDfG7E5BVBQHs3zvqdb1VxXc29yfBCZ3QygyL8zWOrC3CkzR/PT8rSxumzakJT1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+ 
   <!-- Navbar -->
   <%- include('navbar') %>
+  
 
   <div class="main-content">
-    <div class="container-fluid mt-5">
-      <div class="row  text-light mx-auto w-75 " >
-        <div class="col-12  mx-auto col-xl-4 col-lg-7 col-md-9"> 
-          <img src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>" class="p-2 img-fluid" >
+    <div class=" my-5">
+      <div class="row container text-light mx-auto " >
+        <div class="col-12 d-flex justify-content-center  mx-auto col-xl-4 col-lg-7 col-md-9"> 
+          <% if (auto.img ) { %>
+            <img  src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>"   alt="img" height="200px" width="350px">
+            <% } else { %>
+              <img src="/images/autos/chevrolet.jpg"  alt="autoimg" height="200px" width="350px">
+            <% } %>
         </div>
+        
         <div class="col col-xl-5 mx-auto col-md-12 p-4 text-center "> 
           <h2><%= auto.modelo %> <%= auto.marca %></h2>
-          <p>Precio: $<%= auto.precio %></p> 
+
+          <% if (auto.precio) { %>
+            <p>Precio: $<%= auto.precio !== undefined || auto.precio !== null ? auto.precio :0 %></p> 
+            <% } else { %>
+              <p>Precio: $<%= auto.precioventa !== undefined || auto.precioventa !== null ? auto.precioventa :0 %></p> 
+            <% } %>
+         
           <span class="text-success"><b>Stock disponible</b></span>
           <div class=" flex  mt-3">
             <a href="/addToCart/<%= auto.codAD0KM %>" class="btn btn-success">Comprar</a>
@@ -37,14 +50,59 @@
         <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>
       </div>
 
-      <div class="row mt-5 text-white mx-auto">
-        <h4>Tambien puede interesarte...</h4>
-          
-      </div>
-      </div>
+      
+      
     </div>
+   
+    <h3 class="text-light text-center py-4">También te podría interesar...</h3>
+    <div id="carousel" class="carousel slide mb-5" data-ride="carousel">
+      <div class="carousel-inner container">
+        <% for (let i = 0; i < allAutos.length; i += 4) { %>
+          <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+            <div class="row">
+              <% for (let j = i; j < Math.min(i + 4, allAutos.length); j++) { %>
+                <div class="col-6 col-md-3 col-sm-6 mx-auto">
+                  <% const auto = allAutos[j]; %>
+                  <div class="card mb-4" >
+                    <a class="text-dark text-decoration-none" href="/autos/<%= auto.codAD0KM ? auto.codAD0KM : auto.codAU %>">
+                      <% if (auto.img instanceof Buffer && auto.img.length > 0) { %>
+                        <img src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>" alt="<%= auto.marca %>" class="card-img-top" height="150px" width="200px">
+                      <% } else { %>
+                        <img src="/images/autos/chevrolet.jpg" alt="<%= auto.marca %>" class="card-img-top" height="150px" width="200px">
+                      <% } %>
+                      <div class="card-body" style="height:100px;">
+                        <h5 class="card-title"><%= auto.marca %> <%= auto.modelo %></h5>
+                        
+                      </div>
+                    </a>
+                    
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    
+      
+    
+        </div>
+
   </div>
+
+ 
+
   
+
   
   <!-- Incluye el footer -->
   <%- include('footer') %>

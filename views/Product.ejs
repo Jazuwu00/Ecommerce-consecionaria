@@ -15,7 +15,7 @@
   <div class="main-content">
     <div class=" container mt-5">
       <div class="row text-light mx-auto" >
-        <div class="col-12  mx-auto col-xl-5 col-md-6 bg-danger d-flex justify-content-center "> 
+        <div class="col-12  mx-auto col-xl-5 col-md-6  d-flex justify-content-center "> 
           <% if (product.img ) { %>
             <img  src="data:image/jpg;base64, <%= Buffer.from(product.img).toString('base64') %>"   alt="img" height="200px" width="350px">
             <% } else { %>
@@ -73,10 +73,6 @@
         <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>
       </div>
 
-      <div class="row mt-5 text-white mx-auto">
-        <h4>Tambien puede interesarte...</h4>
-          
-      </div>
       </div>
     </div>
   </div>

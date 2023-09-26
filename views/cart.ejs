@@ -49,7 +49,7 @@
                       <td class="pt-3">$<%= item.precio * item.quantity %></td>
                       <td class="">
                         <a href="/removeFromCart?productId=<%= item.codAD0KM %>" class="btn btn-danger px-3">X</a>
-                        <a href="/product/<%= item.type %>/<%= item.codAD0KM %>" class="btn btn-success" style="display: inline-block;">Ver</a>
+                        <a href="/autos/<%= item.codAD0KM %>" class="btn btn-success" style="display: inline-block;">Ver</a>
                       </td>
                     <% } else if (item.type === 'accesorio') { %>
                       <td><%= item.nombre %></td>
@@ -67,7 +67,7 @@
                       <td class="pt-3">$<%= item.precioventa  * item.quantity %></td>
                       <td class="">
                         <a href="/removeFromCart?productId=<%= item.codAU %>" class="btn btn-danger px-3">X</a>
-                        <a href="/product/<%= item.type %>/<%= item.codAU %>" class="btn btn-success" style="display: inline-block;">Ver</a>
+                        <a href="/autos/<%= item.codAU %>" class="btn btn-success" style="display: inline-block;">Ver</a>
                       </td>
                     <% } else if (item.type === 'reparacion') {%>
                       <% console.log( item.codRDSIP , item.id); %>

@@ -13,10 +13,14 @@
 
    <!-- Contenido principal -->
  
-   <div class="main-content d-flex justify-content-center align-items-center">
-    <% if (typeof message !== 'undefined' && message !== null && message !== '') { %>
-        <p class="bg-danger w-25 p-3  mx-auto text-center text-light "> <%= message %></p>
+   <div class="main-content ">
+    <% if (typeof message !== 'undefined' && message !== null) { %>
+      <% if (message === 'Cuenta creada con éxito. Inicia sesión ahora.') { %>
+        <p class="bg-success w-50 p-3 mx-auto text-center text-light"> <%= message %></p>
+      <% } else if (message === 'Contraseña o usuario incorrecto') { %>
+        <p class=" w-50 p-3 mx-auto text-center text-light" style="background-color: rgb(110, 27, 16);"> <%= message %></p>
       <% } %>
+    <% } %>
     <div class="container   py-2">
       <div class="row d-flex justify-content-center align-items-center ">
         <div class="col-12 col-md-6 col-lg-6 col-xl-5">

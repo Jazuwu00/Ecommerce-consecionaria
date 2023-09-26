@@ -185,8 +185,8 @@ app.get('/removeFromCart', (req, res) => {
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'jazsaraviav@gmail.com',
-    pass: 'ztty pfku pmyb oxqj',
+    user: 'concesionarialpp1@gmail.com',
+    pass: 'ydzu lvkf febv gekn',
   },
 });
 
@@ -205,13 +205,45 @@ app.get('/sendMail', async (req, res) => {
           </tr>
         </thead>
         <tbody>
-          ${cart.map(item => `
-            <tr>
-              <td>${item.type === 'auto' ? `${item.marca} ${item.modelo}` : item.nombre}</td>
-              <td>${item.quantity }</td>
-              <td>$${item.precio !== undefined ? item.precio : 0}</td>
-            </tr>
-          `).join('')}
+        ${cart.map(item => {
+          if (item.type === 'autonuevo') {
+            return `
+              <tr>
+                <td>${item.marca} ${item.modelo}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.precio !== undefined ? item.precio : 0}</td>
+              </tr>
+            `;
+          } else if (item.type === 'accesorio') {
+            return `
+              <tr>
+                <td>${item.nombre}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.precio !== undefined ? item.precio : 0}</td>
+              </tr>
+            `;
+          } else if (item.type === 'reparacion') {
+        
+            return `
+              <tr>
+                <td>${item.nombre}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.precio !== undefined ? item.precio : 0}</td>
+               
+              </tr>
+            `;
+          } else if (item.type === 'autousado') {
+      
+            return `
+              <tr>
+              <td>${item.marca} ${item.modelo}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.precioventa !== undefined ? item.precioventa : 0}</td>
+                
+              </tr>
+            `;
+          }
+        }).join('')}
         </tbody>
       </table>
     `;
@@ -223,7 +255,7 @@ app.get('/sendMail', async (req, res) => {
     const mailOptions = {
       from: 'jazsaraviav@gmail.com',
       to: 'jsaraviaa98@gmail.com',
-      subject: '<h4 style=" color: black;  ">Datos de tu compra </h4>',
+      subject: 'Datos de tu compra ',
       html: `
         <div style=" color: black; padding: 30px; ">
           <p>Detalles de tu Compra:</p>
@@ -364,18 +396,62 @@ app.get('/autos/:id', (req, res) => {
   connection.query(
     'SELECT * FROM autodisponible0km WHERE codAD0KM = ?',
     [idProducto],
-    (error, results) => {
+    (error, autoResults) => {
       if (error) {
-        res.status(500).send('Error al obtener el auto');
-      } else if (results.length > 0) {
-        const autoToShow = results[0];
-        res.render('auto', { auto: autoToShow });
+        console.error(error);
+        return res.status(500).send('Error al obtener el auto');
+      }
+
+      if (autoResults.length > 0) {
+        const autoToShow = autoResults[0];
+
+        connection.query(
+          'SELECT * FROM autodisponible0km',
+          (error, allAutos) => {
+            if (error) {
+              console.error(error);
+              return res.status(500).send('Error al obtener los autos');
+            }
+
+            res.render('auto', { auto: autoToShow, allAutos });
+          }
+        );
       } else {
-        res.send('No se encontró el auto con el ID ' + idProducto);
+        connection.query(
+          'SELECT * FROM autousado WHERE codAU = ?',
+          [idProducto],
+          (error, autoUsadoResults) => {
+            if (error) {
+              console.error(error);
+              return res.status(500).send('Error al obtener el auto usado');
+            }
+
+            if (autoUsadoResults.length > 0) {
+              const autoToShow = autoUsadoResults[0];
+
+              connection.query(
+                'SELECT * FROM autousado',
+                (error, allAutosUsados) => {
+                  if (error) {
+                    console.error(error);
+                    return res.status(500).send('Error al obtener los autos usados');
+                  }
+
+                  res.render('auto', { auto: autoToShow, allAutos: allAutosUsados });
+                }
+              );
+            } else {
+              console.log('No se encontró el auto');
+            
+              res.status(404).send('No se encontró el auto');
+            }
+          }
+        );
       }
     }
   );
 });
+
 
 app.get('/product/:type/:id', (req, res) => {
   const tipoProducto = req.params.type;
@@ -384,7 +460,6 @@ app.get('/product/:type/:id', (req, res) => {
   let tableName;
   let idColumnName;
 
-  // Determina la tabla y la columna de ID según el tipo de producto
   switch (tipoProducto) {
     case 'accesorio':
       tableName = 'accesorio';
@@ -425,17 +500,18 @@ app.get('/product/:type/:id', (req, res) => {
 
 // Ruta  inicio de sesión
 app.get('/login', (req, res) => {
- 
-     res.render('login' ); 
+  const message = req.query.message || ''; 
+
+  res.render('login', { message });
 });
 
 // Ruta creacion de cuenta
 app.get('/createAccount', (req, res) => {
-  
-  res.render('createAccount'); 
+  const Wrongmessage = req.query.message || ''; // Cambia "Wrongmessage" a "message"
 
-
+  res.render('createAccount', { Wrongmessage });
 });
+
 
 // requiere autenticacion
 app.get('/perfil', (req, res) => {
@@ -461,7 +537,7 @@ app.post('/loginlog', (req, res) => {
         console.error('Error al consultar la base de datos:', err);
         res.redirect('/login' );
       } else if (results.length === 1) {
-        // Inicio de sesión exitoso
+        
         const usuario = results[0];
 
         // Almacena el nombre del usuario en la sesión
@@ -478,7 +554,7 @@ app.post('/loginlog', (req, res) => {
 
 // Ruta para cerrar la sesión
 app.get('/logout', (req, res) => {
-  // Eliminar la información de la sesión del servidor
+  
   req.session.destroy((err) => {
     if (err) {
       console.error('Error al cerrar la sesión:', err);
@@ -490,26 +566,50 @@ app.get('/logout', (req, res) => {
 });
  
 
-// Ruta creacion de cuenta
+// Ruta creación de cuenta
 app.post('/createAccount', (req, res) => {
   const nick = req.body.nick;
   const contrasenia = req.body.contrasenia;
   const nombre = req.body.nombre;
+  const apellido = req.body.apellido;
+  const email = req.body.email;
 
-  // Verificar las credenciales en la base de datos
+  // Consulta SQL para verificar si el email ya existe
   connection.query(
-    'INSERT INTO usuario (ABM, compras, contrasenia, nick) VALUES (?, ?, ?, ?)',
-    [null, null, contrasenia, nick],
+    'SELECT * FROM usuario WHERE email = ?',
+    [email],
     (error, results) => {
       if (error) {
         console.error(error);
-       
-      }else{
-        res.redirect('/login');
+      
+      } else {
+        if (results.length > 0) {
+          console.log('ya existe cuenta con ese correo')
+          const Wrongmessage = 'Correo electrónico ya registrado';
+          console.log(Wrongmessage)
+          res.redirect(`/createAccount?message=${Wrongmessage}`);
+        } else {
+          console.log('cuenta creada')
+          connection.query(
+            'INSERT INTO usuario (ABM, compras, nombre, apellido, email, contrasenia, nick) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [null, null, nombre, apellido, email, contrasenia, nick],
+            (insertError, insertResults) => {
+              if (insertError) {
+                console.error(insertError);
+             
+              } else {
+                const successMessage = 'Cuenta creada con éxito. Inicia sesión ahora.';
+                res.redirect(`/login?message=${successMessage}`);
+              }
+            }
+          );
+        }
+        
       }
     }
   );
 });
+
 
 
 // Iniciar el servidor
