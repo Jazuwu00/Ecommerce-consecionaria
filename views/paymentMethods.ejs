@@ -12,50 +12,76 @@
     <!-- Navbar -->
     <%- include('navbar') %>
 
-    <div class="main-content text-light  ">
-      <div class="row bg-dark w-50 mx-auto">
-        <div class="col-12 border-bottom border-light p-4"> 
-          <h5><b>1 </b>ELEGI LA OPCION DE RETIRO O ENVIO DE TU COMPRA</h5>
-        </div>
-          <div class="col-xl-6 col-12 py-3 text-center">
-            <p>Selecciona tu provincia</p>
-            <div><select name="select" class="bg-dark text-light w-50">
-              <option value="value1">CABA </option>
-              <option value="value2" selected>CABALLITO</option>
-              <option value="value3">FLORES</option>
-            </select></div>
-          </div>
-        
-              </div>
-              
-              <div class="row bg-dark mt-3 w-50 mx-auto">
-                <div class="col-xl-12 col-12 border border-light p-4"> 
-                  <h5><b>2 </b>INTRODUCE TU CODIGO POSTAL</h5>
-                </div>
-                  <div class="col-12  py-4 text-center">
-                    <p>Ingresa tu codigo postal</p>
-                    <div><input type="number" placeholder="Codigo postal "></div>
+    <div class="main-content text-light">
+      <div class="container mt-5">
+          <form action="/sendMail" method="GET">
+              <div class="row  text-light p-4 mb-3 rounded" style=" background-color: #020513;">
+                  <div class="col-12 border-bottom border-light mb-4"> 
+                      <h5><b>1 </b>ELEGI LA OPCION DE RETIRO O ENVIO DE TU COMPRA</h5>
                   </div>
-             </div>
-          <div class="row bg-dark mt-3 w-50 mx-auto">
-
-            <div class="col-12 border border-light p-4"> 
-              <h5><b>3 </b>SELECCIONA METODO DE PAGO</h5>
-            </div>
-              <div class="col py-2 text-center">
-                <form action="/sendMail"  method="GET" class="">
-                  <% for (let i = 0; i < metodo.length; i++) { %>
+                  <div class="col-xl-6 col-12 py-3 text-center">
+                      <p>Selecciona tu pais</p>
                       <div>
-                          <input type="radio" id="<%= metodo[i].codFP %>" name="metodo_pago" value="<%= metodo[i].codFP %>">
-                          <label for="<%= metodo[i].codFP %>"><%= metodo[i].descripcion %></label>
+                          <select name="provincia" class=" text-light w-50" style=" background-color: #020513;">
+                              <option value="CABA">CABA</option>
+                              <option value="Caballito" selected>CABALLITO</option>
+                              <option value="Flores">FLORES</option>
+                          </select>
                       </div>
-                  <% } %>
-                  <button type="submit "  class="btn btn-success m-3 ">pagar</button>
-              </form>
-           </div>
-         </div>
-    </div>
+                  </div>
+                  <div class="col-xl-6 col-12 py-3 text-center">
+                    <p>Selecciona tu provincia</p>
+                    <div>
+                        <select name="provincia" class=" text-light w-50" style=" background-color: #020513;">
+                            <option value="CABA">CABA</option>
+                            <option value="Caballito" selected>CABALLITO</option>
+                            <option value="Flores">FLORES</option>
+                        </select>
+                    </div>
+                </div>
+              </div>
 
+              <div class="row  text-light p-4 mb-3 rounded flex justify-content-center " style=" background-color: #020513;">
+                  <div class="col-12 border-bottom border-light mb-4 "> 
+                      <h5><b>2 </b>INTRODUCE TU DIRRECCION</h5>
+                  </div>
+                  <div class="col col-xl-4  m-1 py-4 text-center">
+                      <p>Calle</p>
+                      <div><input type="text" placeholder="Calle" style=" background-color: #020513;"></div>
+                  </div>
+                  <div class="col col-xl-4 m-1 py-4 text-center">
+                    <p>Altura</p>
+                    <div><input type="number"  placeholder="Altura"  style=" background-color: #020513;"></div>
+                </div>
+                <div class="col col-xl-4  m-1 py-4 text-center">
+                    <p>Localidad</p>
+                    <div><input type="text" placeholder="Localidad" style=" background-color: #020513;"></div>
+                </div>
+                <div class="col col-xl-4  m-1 py-4 text-center">
+                  <p>Codigo postal</p>
+                  <div><input type="number"  placeholder="Codigo postal"  style=" background-color: #020513;"></div>
+              </div>
+              </div>
+
+              <div class="row  text-light p-4 mb-3 rounded" style=" background-color: #020513;">
+                  <div class="col-12 border-bottom border-light mb-4"> 
+                      <h5><b>3 </b>SELECCIONA METODO DE PAGO</h5>
+                  </div>
+                  <div class="col py-2 text-left">
+                      <% for (let i = 0; i < metodo.length; i++) { %>
+                          <div>
+                              <input type="radio" id="<%= metodo[i].codFP %>" name="metodo_pago" value="<%= metodo[i].codFP %>">
+                              <label for="<%= metodo[i].codFP %>"><%= metodo[i].descripcion %></label>
+                          </div>
+                      <% } %>
+                  </div>
+              </div>
+                <div class="text-center">
+              <button type="submit" class="btn btn-dark ">Pagar</button>
+                </div>
+          </form>
+      </div>
+  </div>
    <!-- Incluye el footer -->
   <%- include('footer') %>
 

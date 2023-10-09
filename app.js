@@ -13,6 +13,12 @@ app.use(session({
   secret: 'secreto', 
   resave: false,
   saveUninitialized: true,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false, 
+    maxAge: 3600000, 
+  }
 }));
 
 // session disponible para todas las rutas
@@ -180,7 +186,7 @@ app.get('/removeFromCart', (req, res) => {
 
   res.redirect(`/cart`);
 });
-
+const userName = session.usuario
 //Configuracion Mail
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -193,8 +199,10 @@ const transporter = nodemailer.createTransport({
 const sendMailAsync = util.promisify(transporter.sendMail).bind(transporter);
 
 app.get('/sendMail', async (req, res) => {
+  
+  console.log(userName)
   try {
-    // Genera la tabla HTML con los datos del carrito
+   
     const cartTable = `
       <table style="text-align:center;  color: black; border-collapse: collapse; width: 70%;">
         <thead>
@@ -248,7 +256,6 @@ app.get('/sendMail', async (req, res) => {
       </table>
     `;
 
-    // Calcula el total
 
     const total = cart.reduce((acc, item) => acc +( item.quantity * (item.precio !== undefined ? item.precio : 0)), 0);
 
@@ -258,9 +265,13 @@ app.get('/sendMail', async (req, res) => {
       subject: 'Datos de tu compra ',
       html: `
         <div style=" color: black; padding: 30px; ">
-          <p>Detalles de tu Compra:</p>
+        <h3> Hola ${userName !== undefined ? userName : ""}, <br> Te enviamos los detalles de tu compra!</h3>
+
+        
+         <p>Detalles de tu Compra:</p>
           ${cartTable}
           <p>Total: $${total}</p>
+
         </div>
       `,
     };
@@ -273,6 +284,7 @@ app.get('/sendMail', async (req, res) => {
     console.error('Error al enviar el correo electrónico:', error);
     res.status(500).send('Error al enviar el correo electrónico');
   }
+  
 });
 
 

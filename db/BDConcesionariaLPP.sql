@@ -42,7 +42,8 @@ marca varchar(20),
 modelo varchar(50),
 precio float,
 color varchar(20),
-borrado boolean
+borrado boolean,
+img longblob
 )Engine=InnoDB;
 
 Create table FormaPago(
@@ -236,11 +237,13 @@ constraint fk_detallereparacion0km_reparaciondisponible0km foreign key (codRDISP
 )Engine=InnoDB;
 
 create table Accesorio(
-codACC int auto_increment primary key,
-nombre varchar(20),
-PU float,
-stock int,
-borrado boolean
+        codACC int auto_increment primary key,
+        nombre varchar(20),
+        PU float,
+        stock int,
+        borrado boolean,
+        img longblob,
+        precio int 
 )Engine=InnoDB;
 
 create table TempSelectAccesorio(
@@ -431,7 +434,10 @@ PermisoAdmin boolean,
 ABM boolean,
 Compras boolean,
 Posventa boolean,
-Contratos boolean
+Contratos boolean,
+nombre varchar(20),
+email varchar(30),
+apellido varchar(30)
 )Engine=InnoDB;
 
 Create table RevisionPrestamoTemporal(

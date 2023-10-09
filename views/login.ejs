@@ -16,9 +16,9 @@
    <div class="main-content ">
     <% if (typeof message !== 'undefined' && message !== null) { %>
       <% if (message === 'Cuenta creada con éxito. Inicia sesión ahora.') { %>
-        <p class="bg-success w-50 p-3 mx-auto text-center text-light"> <%= message %></p>
+        <p class="w-25  p-3 mx-auto text-center text-light border-bottom"" style="font-weight: bold;"> <%= message %></p>
       <% } else if (message === 'Contraseña o usuario incorrecto') { %>
-        <p class=" w-50 p-3 mx-auto text-center text-light" style="background-color: rgb(110, 27, 16);"> <%= message %></p>
+        <p class=" w-25 p-3 mx-auto text-center text-light border-bottom "  style="font-weight: bold;"> <%= message %></p>
       <% } %>
     <% } %>
     <div class="container   py-2">
