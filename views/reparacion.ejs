@@ -13,20 +13,20 @@
   <!-- Contenido principal -->
   <div class="main-content">
     <div class="producto ">
-      <h1 class="text-center  text-dark pt-5">Reparaciones disponibles</h1>
-        <div class="row container  py-5 mx-auto ">
+      <h1 class="text-center text-uppercase text-dark pt-5">Reparaciones disponibles</h1>
+        <div class="row container  py-5 mx-auto justify-content-center">
           
             <% reparaciones.forEach(reparacion => { %>
-       <div class="col-12 col-xl-3 m-4  p-4   d-flex flex-column justify-content-center" style=" background-color: rgb(226, 223, 219);">
+              <%if(reparacion.nombre !== "Nada a reparar") { %>
+           <div class="col-12 col-xl-5  p-4 m-1 my-2  d-flex flex-column justify-content-center" style=" background-color: rgba(216, 215, 216, 0.925); ">
         
         <h3 class=""><%= reparacion.nombre %></h3>
-        <h6 class="border-bottom border-dark w-50 mt-2">Descripcion</h6>
         
         <p><%= reparacion.detalles %></p>
         <div  class="mt-auto mx-auto"  style="height: 50px;">
                 
-            <a href="/addToCart/<%= reparacion.codRDISP %>"  class="btn btn-outline-dark small ">Solicitar</a>
-
+            <a href="/addToCart/<%= reparacion.codRDISP %>"  class="btn btn-dark small ">Solicitar</a>
+            <% }%> 
           </div>
        </div>
 

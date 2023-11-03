@@ -17,7 +17,7 @@
     <div class=" my-5">
       <div class="row container text-light mx-auto " >
         <div class="col-12 d-flex justify-content-center  mx-auto col-xl-4 col-lg-7 col-md-9"> 
-          <% if (auto.img ) { %>
+          <% if (auto.img instanceof Buffer && auto.img.length > 0 ) { %>
             <img  src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>"   alt="img" height="200px" width="350px">
             <% } else { %>
               <img src="/images/autos/chevrolet.jpg"  alt="autoimg" height="200px" width="350px">
@@ -42,13 +42,7 @@
           
 
        </div>
-      <div class="col-12 col-xl-8 text-white py-5 w-80 mx-auto ">
-        <div class="col-12 "><h5 class="border-bottom   pb-1">Descripcion</h5></div>  
-        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>  
-        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>
-        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>  
-        <div class="col-12"><p><b>Dato1</b> Lorem ipsum dolor sit.</p></div>
-      </div>
+      
 
       
       
@@ -61,7 +55,7 @@
           <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
             <div class="row">
               <% for (let j = i; j < Math.min(i + 4, allAutos.length); j++) { %>
-                <div class="col-6 col-md-3 col-sm-6 mx-auto">
+                <div class="col-5 col-md-3 col-sm-6 mx-auto">
                   <% const auto = allAutos[j]; %>
                   <div class="card mb-4" >
                     <a class="text-dark text-decoration-none" href="/autos/<%= auto.codAD0KM ? auto.codAD0KM : auto.codAU %>">
@@ -70,9 +64,9 @@
                       <% } else { %>
                         <img src="/images/autos/chevrolet.jpg" alt="<%= auto.marca %>" class="card-img-top" height="150px" width="200px">
                       <% } %>
-                      <div class="card-body" style="height:100px;">
-                        <h5 class="card-title"><%= auto.marca %> <%= auto.modelo %></h5>
-                        
+                      <div class="card-body text-center" style="height:120px;">
+                        <h5 class="card-title "><%= auto.marca %> <%= auto.modelo %></h5>
+                        <p class="btn mt-2" style="background-color: rgb(0, 102, 255); color: #ffffff;">Ver</p>
                       </div>
                     </a>
                     
