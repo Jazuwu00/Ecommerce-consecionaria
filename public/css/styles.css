@@ -1,21 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inclusive+Sans&family=Montserrat:wght@400;500&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
 
 body {
   margin: 0%;
-  background-color: #c5bcbc !important;
-  color: rgb(0, 0, 0) !important;
+  color: #212529 !important;
+  background-color: #d8d8d8 !important;
   list-style: none !important;
   font-family: 'Inclusive Sans', sans-serif;
 
 }
 
 #banner {
-  background-image: url("../images/wallpaper.jpg");
-  filter: brightness(80%);
+  background-image: url("../images/bannerimg.jpg");
+
   padding: 0%;
   margin: 0%;
   width: 100%;
-  height: 590px;
+  height: 690px;
   background-size: cover;
   position: relative;
   background-position: center;
@@ -69,4 +70,21 @@ footer {
   }
 
 
+}
+
+table,
+td,
+tr,
+#total {
+  background-color: #eeecec !important;
+}
+
+#border {
+  border-top: 1px solid rgba(53, 53, 53, 0.26)
+}
+
+
+input::placeholder,
+option {
+  color: black;
 }

@@ -12,59 +12,59 @@
     <!-- Navbar -->
     <%- include('navbar') %>
 
-    <div class="main-content text-light">
+    <div class="main-content ">
       <div class="container mt-5">
           <form action="/sendMail" method="GET">
-              <div class="row  text-light p-4 mb-3 rounded mx-auto" style="width: 80%; background-color: rgba(37, 36, 36, 0.801);">
-                  <div class="col-12 border-bottom border-light mb-4"> 
+              <div class="row  p-4 mb-3 rounded mx-auto" style="width: 80%; background-color: #eeecec !important;">
+                  <div class="col-12 border-bottom border-dark mb-4"> 
                       <h5><b>1 </b>ELEGI LA OPCION DE RETIRO O ENVIO DE TU COMPRA</h5>
                   </div>
-                  <div class="col-5 py-3 text-center mx-auto">
-                      <p>Selecciona tu pais</p>
+                  <div class="col-lg-5 col-12 py-3 text-center mx-auto">
+                      <p>Selecciona sede a retirar</p>
                       <div>
-                          <select name="provincia" class=" text-light w-50" style=" background-color: rgba(37, 36, 36, 0.801);">
+                          <select name="Sede" class="  w-50" style="  background-color: #eeecec !important;">
                               <option value="CABA">CABA</option>
                               <option value="Caballito" selected>CABALLITO</option>
                               <option value="Flores">FLORES</option>
                           </select>
                       </div>
                   </div>
-                  <div class="col-5 py-3 text-center mx-auto">
-                    <p>Selecciona tu provincia</p>
+                  <div class="col-lg-5 col-12 py-3 text-center mx-auto">
+                    <p>Selecciona horario</p>
                     <div>
-                        <select name="provincia" class=" text-light w-50" style="background-color: rgba(37, 36, 36, 0.801);">
-                            <option value="CABA">CABA</option>
-                            <option value="Caballito" selected>CABALLITO</option>
-                            <option value="Flores">FLORES</option>
+                        <select name="Horario" class=" w-50" style=" background-color: #eeecec !important;">
+                            <option value="8am">08:30</option>
+                            <option value="9am" selected>09:00</option>
+                            <option value="14pm">14:00</option>
                         </select>
                     </div>
                 </div>
               </div>
 
-              <div class="row  text-light p-4 mb-3 rounded flex justify-content-center mx-auto" style=" width: 80%; background-color: rgba(37, 36, 36, 0.801);">
-                  <div class="col-12 border-bottom border-light mb-4 "> 
-                      <h5><b>2 </b>INTRODUCE TU DIRRECCION</h5>
+              <div class="row   p-4 mb-3 rounded flex justify-content-center mx-auto" style=" width: 80%;background-color: #eeecec !important;">
+                  <div class="col-12 border-bottom border-dark mb-4 "> 
+                      <h5><b>2 </b>INTRODUCE TU DATOS</h5>
                   </div>
-                  <div class="col-5 m-1 py-4 text-center">
-                      <p>Calle</p>
-                      <div><input type="text" placeholder="Calle" style=" background-color: rgba(37, 36, 36, 0.801);"></div>
+                  <div class="col-lg-5 col-12 m-1 py-4 text-center">
+                      <p>Nombre completo</p>
+                      <div><input type="text" class="" placeholder="Calle" style=" background-color: #eeecec !important;"></div>
                   </div>
-                  <div class="col-5 m-1 py-4 text-center">
-                    <p>Altura</p>
-                    <div><input type="number"  placeholder="Altura"  style=" background-color: rgba(37, 36, 36, 0.801);"></div>
+                  <div class="col-lg-5 col-12 m-1 py-4 text-center">
+                    <p>Domicilio</p>
+                    <div><input type="number"  placeholder="Altura"  style=" background-color: #eeecec !important;"></div>
                 </div>
-                <div class="col-5  m-1 py-4 text-center">
+                <div class="col-lg-5 col-12  m-1 py-4 text-center">
                     <p>Localidad</p>
-                    <div><input type="text" placeholder="Localidad" style=" background-color: rgba(37, 36, 36, 0.801);"></div>
+                    <div ><input type="text" placeholder="Localidad" style="  background-color: #eeecec !important;"></div>
                 </div>
-                <div class="col-5  m-1 py-4 text-center">
+                <div class="col-lg-5 col-12 m-1 py-4 text-center">
                   <p>Codigo postal</p>
-                  <div><input type="number"  placeholder="Codigo postal"  style=" background-color: rgba(37, 36, 36, 0.801);"></div>
+                  <div><input type="number"  placeholder="Codigo postal"  style="  background-color: #eeecec !important;"></div>
               </div>
               </div>
 
-              <div class="row  text-light p-4 mb-3 rounded mx-auto" style="width: 80%; background-color: rgba(37, 36, 36, 0.801);">
-                  <div class="col-12 border-bottom border-light mb-4"> 
+              <div class="row  p-4 mb-3 rounded mx-auto" style="width: 80%;  background-color: #eeecec !important;">
+                  <div class="col-12 border-bottom border-dark mb-4"> 
                       <h5><b>3 </b>SELECCIONA METODO DE PAGO</h5>
                   </div>
                   <div class="col py-2 text-left">

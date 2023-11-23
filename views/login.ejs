@@ -14,54 +14,78 @@
    <!-- Contenido principal -->
  
    <div class="main-content ">
-    <% if (typeof message !== 'undefined' && message !== null) { %>
-      <% if (message === 'Cuenta creada con éxito. Inicia sesión ahora.') { %>
-        <p class="w-50  p-3 mx-auto text-center text-light border-bottom" style="font-weight: bold;"> <%= message %></p>
-      <% } else if (message === 'Contraseña o usuario incorrecto') { %>
-        <p class=" w-50 p-3 mx-auto text-center text-light text-uppercase"  style="font-weight: bold;"> <%= message %></p>
-      <% } %>
-    <% } %>
-    <div class="d-flex justify-content-center align-items-center"  >
-      <div class="d-flex justify-content-center align-items-center h-100">
-          <div class="card  text-white " style=" background-color: #726b6d; width: 400px;">
-            <div class="card-body px-3 text-center">
-  
-              <div class="mb-md-5 mt-md-2 pb-2">
-                <form action="/loginlog" method="POST"> 
-  
-                  <h2 class="fw-bold ">Login</h2>
-                  <p class="text-white-50 mb-3">Ingresa tu usuario y contraseña</p>
-  
-                  <div class="form-outline form-white mb-4">
-                    <label class="form-label" for="nick">usuario</label>
-                    <input type="text" id="nick" name="nick" required class="w-75 mx-auto form-control form-control-md" />
-                  </div>
-  
-                  <div class="form-outline form-white mb-4">
-                    <label class="form-label" for="contrasenia">Contraseña</label> 
-                    <input type="password" id="contrasenia" name="contrasenia" required class="w-75 mx-auto  form-control form-control-md" />
-                  </div>
-  
-                  <p class="small mb-4 pb-lg-2"><a class="text-white-50" href="#!">Olvidaste la contraseña?</a></p>
-  
-                  <button class="btn btn-outline-light btn-md px-5" type="submit">Login</button>
-  
-                </form>
-              </div>
-  
-              <div class="mt-4">
-                <p class="mb-0">No tienen cuenta? <a href="/createAccount" class="text-white-50 fw-bold">Crea una cuenta</a>
-                </p>
-              </div>
-  
+   
+    <div class="d-flex justify-content-center "   >
+     <div class="container py-2">
+      
+      <div class="  row d-flex justify-content-center align-items-center h-100 ">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <% if (typeof message !== 'undefined' && message !== null) { %>
+            <% if (message === 'Cuenta creada con éxito. Inicia sesión ahora.') { %>
+              <p class=" mx-auto text-center  border-bottom" style=" font-weight: bold;"> <%= message %></p>
+            <% } else if (message === 'Contraseña o usuario incorrecto') { %>
+              <p class="  text-center text-uppercase"  style="font-weight: bold;"> <%= message %></p>
+            <% } %>
+          <% } %>
+        <div class="card   text-white " style="background-color: #0E0E0E; ">
+          <div class="card-body px-3 text-center">
+
+            <div class="mb-md-5 mt-md-2 pb-2">
+              <form action="/loginlog" method="POST"> 
+
+                <h2 class="fw-bold ">Login</h2>
+                <p class="text-white-50 mb-3">Ingresa tu usuario y contraseña</p>
+
+                <div class="form-outline form-white mb-4">
+                  <label class="form-label" for="nick">usuario</label>
+                  <input type="text" id="nick" name="nick" required class="w-75 mx-auto form-control form-control-md" />
+                </div>
+
+                <div class="form-outline form-white mb-4 " style="position: relative;">
+                  <label class="form-label" for="contrasenia">Contraseña</label> 
+                  <input  type="password" id="contrasenia" name="contrasenia" required class="w-75 mx-auto  form-control form-control-md" />
+                  <div class="" style="position: absolute; top: 55%; left:80%;"  onclick="mostrarContrasena()"><i class=" bi-eye text-dark"></i></div>
+                </div>
+
+                <p class="small mb-4 pb-lg-2"><a class="text-white-50" href="#!">Olvidaste la contraseña?</a></p>
+
+                <button class="btn btn-outline-light btn-md px-5" type="submit">Login</button>
+
+              </form>
             </div>
+
+            <div class="mt-4">
+              <p class="mb-0">No tienen cuenta? <a href="/createAccount" class="text-white-50 fw-bold">Crea una cuenta</a>
+              </p>
+            </div>
+
           </div>
         </div>
+      </div>
+      </div>
+     </div>
+      
       </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function mostrarContrasena(){
+      var tipo = document.getElementById("contrasenia");
+      var icon = document.querySelector("[onclick='mostrarContrasena()'] i");
+
+      if(tipo.type == "password"){
+          tipo.type = "text";
+          icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+      }else{
+          tipo.type = "password";
+          icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+      }
+  }
+  </script>
   <!-- Footer -->
   <!-- Incluye el footer -->
   <%- include('footer') %>

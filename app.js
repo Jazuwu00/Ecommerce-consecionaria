@@ -77,7 +77,29 @@ app.get('/', (req, res) => {
     res.render('index', { autos: results });
   })
 });
-
+app.get('/user/edit', (req, res) => {
+  const userName = res.locals.session.usuario;
+  const query = 'SELECT * FROM usuario WHERE nick = ?';
+  connection.query(query, [userName], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error al obtener datos del usuario');
+    }
+    res.render('DataUser', { data: results[0] }); // Renderiza la vista de edición y pasa los datos del usuario
+  });
+});
+app.post('/user/update', (req, res) => {
+  console.log(req.body);
+  const { nick, contrasenia, nombre, apellido, email } = req.body;
+  const updateQuery = 'UPDATE usuario SET contrasenia = ?, nombre = ?,apellido=?,email=? WHERE nick = ?';
+  connection.query(updateQuery, [contrasenia, nombre, apellido, email, nick], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error al actualizar el usuario');
+    }
+    res.redirect('/');
+  });
+});
 app.get('/addToCart/:id', (req, res) => {
   const idProducto = req.params.id;
 

@@ -19,7 +19,7 @@
         <div class="row py-5 mx-auto d-flex justify-content-center">
           <% autos.forEach(auto => { %>
           <div class=" col-9 col-sm-8  col-md-5 col-lg-4 col-xl-3 p-2  "> 
-            <div class="card text-center mx-auto shadow-lgd-flex flex-column justify-content-center" style=" background-color: rgb(226, 223, 219);"> 
+            <div class="card text-center mx-auto shadow-lgd-flex flex-column justify-content-center" style="background-color: #f1f1f1 ;"> 
               <a href="" class="text-dark p-1" >
                 <% if (auto.img instanceof Buffer && auto.img.length > 0) { %>
                 <img src="data:image/jpg;base64, <%= Buffer.from(auto.img).toString('base64') %>"   alt="<%= auto.marca %>" height="150px" width="250px">
