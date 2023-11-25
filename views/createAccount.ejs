@@ -13,7 +13,7 @@
 
    <!-- Contenido principal -->
  
-   <div class="main-content d-flex justify-content-center align-items-center">
+   <div class="main-content  " style="padding-top: 20%;">
     <div class="container py-2">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -52,10 +52,13 @@
                   </div>
   
   
-                  <div class="form-outline form-white mb-4">
-                    <label class="form-label" for="contrasenia">Contraseña</label>
-                    <input type="password" id="contrasenia" name="contrasenia" required class="form-control form-control-md" />
+                  <div class="form-outline form-white mb-4 " style="position: relative;">
+                    <label class="form-label" for="contrasenia">Contraseña</label> 
+                    <input  type="password" id="contrasenia" name="contrasenia" required class=" form-control form-control-md" />
+                    <div class="" style="position: absolute; top: 55%; left:90%;"  onclick="mostrarContrasena()"><i class=" bi-eye text-dark"></i></div>
                   </div>
+
+
                   <button class="btn btn-outline-light btn-lg px-5" type="submit">Crear cuenta</button>
   
                 </form>
@@ -75,6 +78,22 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function mostrarContrasena(){
+      var tipo = document.getElementById("contrasenia");
+      var icon = document.querySelector("[onclick='mostrarContrasena()'] i");
+
+      if(tipo.type == "password"){
+          tipo.type = "text";
+          icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+      }else{
+          tipo.type = "password";
+          icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+      }
+  }
+  </script>
   <!-- Footer -->
   <!-- Incluye el footer -->
   <%- include('footer') %>

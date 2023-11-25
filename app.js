@@ -6,7 +6,7 @@ const path = require('path'); // Importa el módulo 'path'
 const mysql = require('mysql2');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
-
+const crypto = require('crypto');
 // express-session
 app.use(session({
   name: 'myCookie',
@@ -62,6 +62,7 @@ app.get('/cart', (req, res) => {
   console.log(cart)
   res.render('cart', { cart });
 });
+
 
 
 // ruta principal
@@ -192,7 +193,6 @@ app.get('/addToCart/:id', (req, res) => {
   );
 });
 
-
 // Ruta para eliminar productos del carrito
 app.get('/removeFromCart', (req, res) => {
 
@@ -209,6 +209,7 @@ app.get('/removeFromCart', (req, res) => {
   res.redirect(`/cart`);
 });
 const userName = session.usuario
+
 //Configuracion Mail
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -224,7 +225,8 @@ app.get('/sendMail', async (req, res) => {
 
   console.log(userName)
   try {
-
+    const userName = res.locals.session.usuario;
+    const userEmail = res.locals.session.mail;
     const cartTable = `
       <table style="text-align:center;  color: black; border-collapse: collapse; width: 70%;">
         <thead>
@@ -283,7 +285,7 @@ app.get('/sendMail', async (req, res) => {
 
     const mailOptions = {
       from: 'jazsaraviav@gmail.com',
-      to: 'jsaraviaa98@gmail.com',
+      to: [userEmail,'concesionarialpp1@gmail.com'],
       subject: 'Datos de tu compra ',
       html: `
         <div style=" color: black; padding: 30px; ">
@@ -299,7 +301,7 @@ app.get('/sendMail', async (req, res) => {
     };
 
     await sendMailAsync(mailOptions);
-
+    cart.length = 0;
     console.log('Correo electrónico enviado con éxito');
     res.render('thankyou');
   } catch (error) {
@@ -576,7 +578,8 @@ app.post('/loginlog', (req, res) => {
 
         // Almacena el nombre del usuario en la sesión
         req.session.usuario = usuario.nick;
-
+     
+        req.session.mail = usuario.email;
         res.redirect('/');
       } else {
 
